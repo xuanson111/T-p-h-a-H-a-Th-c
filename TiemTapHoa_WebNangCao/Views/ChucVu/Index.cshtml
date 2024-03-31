@@ -1,0 +1,140 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.ChucVu>
+@*@model PagedList.IPagedList<TiemTapHoa_WebNangCao.Models.ChucVu>
+@using PagedList.Mvc;*@
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/assets/CSS/supplier.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<title>Quản lý chức vụ</title>
+
+
+<div class="product-management management">
+    <h2 class="management-title">Danh sách chức vụ</h2>
+
+    <div class="management-group">
+        <div class="search-group">
+            <form id="form_search">
+                <div class="search">
+                    @Html.TextBox("searchString", null, new { placeholder = "Nhập tên chức vụ" })
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <button type="submit" class="Btn">Tìm kiếm</button>
+            </form>
+        </div>
+
+        <div class="btn-group">
+            <button class="Btn" onclick="location.href='@Url.Action("Create", "ChucVu")'">Thêm</button>
+        </div>
+    </div>
+</div>
+
+<div class="data">
+    <table class="data-table" id="data-table">
+        <tr class="table-head">
+            <th>Mã</th>
+            <th>Tên</th>
+            <th>Lương</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaCV)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenCV)
+                </td>
+                <td>
+                    @string.Format("{0:N0}", item.LuongCV)
+                </td>
+                <td class="data-table-control">
+                    <button onclick="location.href='@Url.Action("Edit", "ChucVu", new { id = item.MaCV })'" class="Btn">Sửa</button>
+                    <button style="background-color:red" onclick="xoaChucVu(@item.MaCV)" class="Btn">Xóa</button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    let formSearch = document.querySelector('#form_search');
+    let formSearch_Input = formSearch.querySelector('input');
+
+    formSearch.onsubmit = (e) => {
+        e.preventDefault();
+        let searchStr = formSearch_Input.value;
+        loadCVData(searchStr)
+    }
+
+    function loadCVData(searchString) {
+        $.ajax({
+            url: "/ChucVu/Search",
+            type: "GET",
+            data: {
+                searchString,
+            },
+            success: function (result) {
+                $("#data-table").html(result);
+            },
+            error: function (error) {
+                console.error("Error during search:", error);
+            }
+        })
+    }
+
+    function xoaChucVu(idCV) {
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa chức vụ này",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#bf3010',
+            cancelButtonColor: '#1d89e4',
+            confirmButtonText: "Xóa",
+            cancelButtonText: "Không"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/ChucVu/Delete",
+                    type: "POST",
+                    data: {
+                        id: idCV
+                    },
+                    success: function (data) {
+                        if (data.result) {
+                            Swal.fire({
+                                title: "Xóa thành công",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1000
+                            })
+                            let searchStr = formSearch_Input.value;
+                            loadCVData(searchStr)
+                        } else {
+                            Swal.fire({
+                                title: "Xóa thất bại!",
+                                icon: "error",
+                                showCancelButton: true,
+                                showConfirmButton: false,
+                            })
+                        }
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            title: "Xóa thất bại",
+                            icon: "error",
+                            showCancelButton: true,
+                            showConfirmButton: false,
+                        })
+                    }
+                })
+            }
+        })
+    }
+</script>

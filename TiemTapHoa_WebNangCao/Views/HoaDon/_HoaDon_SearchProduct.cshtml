@@ -1,0 +1,32 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.HangHoa>
+
+@{
+    Layout = null;
+}
+
+<table class="data-table">
+    <tr class="table-head">
+        <th></th>
+        <th>Tên</th>
+        <th>Số lượng</th>
+        <th>Đơn giá</th>
+        <th>Đơn vị</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@item.HinhAnh" />
+            </td>
+            <td>@item.TenHH</td>
+            <td>@string.Format("{0:N0}", item.SoLuong)</td>
+            <td>@string.Format("{0:N0}", item.DonGia)</td>
+            <td>@item.DonVi</td>
+            <td class="btn-in-table btn--addOrder" onclick="addOrder(@item.MaHH)">
+                <span>Thêm</span>
+            </td>
+        </tr>
+    }
+</table>

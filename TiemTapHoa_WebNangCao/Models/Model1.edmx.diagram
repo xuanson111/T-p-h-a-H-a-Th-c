@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5dffe5d0c4f5468c990b79dc7d017d01" Name="Diagram1">
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.BangLuong" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.ChiTietHD" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.ChiTietPhieuNhap" Width="1.5" PointX="12.25" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.ChucVu" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.HangHoa" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.HoaDon" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.NhaCungCap" Width="1.5" PointX="7.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.NhanVien" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.PhieuNhap" Width="1.5" PointX="10" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.TaiKhoan" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.ThongKeDoanhThu" Width="1.5" PointX="7.625" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="DBTiemTapHoaModel.FK__BangLuong__MaNV__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="DBTiemTapHoaModel.FK__ChiTietHD__MaHD__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="DBTiemTapHoaModel.FK__ChiTietHD__MaHH__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="DBTiemTapHoaModel.FK__ChiTietPh__MaPhi__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="DBTiemTapHoaModel.FK__ChiTietPhi__MaHH__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="DBTiemTapHoaModel.FK__NhanVien__ChucVu__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="DBTiemTapHoaModel.FK__HoaDon__MaNV__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="DBTiemTapHoaModel.FK__PhieuNhap__MaNCC__4BAC3F29" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DBTiemTapHoaModel.sysdiagram" Width="1.5" PointX="0.75" PointY="9.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

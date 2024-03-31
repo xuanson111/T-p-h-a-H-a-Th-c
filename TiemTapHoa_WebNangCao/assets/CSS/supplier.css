@@ -1,0 +1,53 @@
+﻿
+
+@media (max-width: 1013px) {
+
+    .data-table tr td:first-child,
+    .data-table tr th:first-child {
+        display: none;
+    }
+
+    .data-table {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 739px) {
+    .title {
+        font-size: 2.2rem;
+    }
+
+    .link_body a {
+        font-size: 1.5rem;
+    }
+
+    .data-title {
+        font-size: 1.8rem
+    }
+
+    .search-input {
+        width: 180px;
+    }
+
+    .search-filter {
+        width: 120px;
+    }
+
+    .search-input input {
+        padding: 10px 12px;
+    }
+
+    .search-filter select {
+        padding: 11px 12px;
+    }
+
+    .data-table tr td:nth-child(5),
+    .data-table tr th:nth-child(5) {
+        display: none;
+    }
+
+    .Btn {
+        padding: 10px 12px;
+        margin-left: 12px;
+    }
+}

@@ -1,0 +1,112 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.ChiTietHDView>
+
+@{
+    Layout = null;
+    TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities db = new TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities();
+    double total = 0;
+    if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            total += double.Parse((item.soLuong * item.donGia).ToString());
+        }
+    }
+    var lstHD = db.HoaDons.ToList();
+    int maxMaHD = lstHD[lstHD.Count - 1].MaHD;
+    DateTime now = DateTime.Now;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/assets/CSS/base.css">
+    <link rel="stylesheet" href="~/assets/CSS/printPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div id="app">
+        <div id="header">
+            <div class="logo-block">
+                <div class="logo">
+                    <i class="fa-solid fa-store"></i>
+                    <span>Tạp Hóa Hòa Thạc</span>
+                </div>
+
+                <div class="logo-line"></div>
+            </div>
+        </div>
+
+        <div id="container">
+            <div class="billID">
+                <h2>Mã hóa đơn:</h2>
+                <p>@maxMaHD</p>
+            </div>
+
+            <div class="dateCreate">
+                <h2>@now.ToString("dd/MM/yyyy HH:mm:ss tt")</h2>
+            </div>
+
+            <div class="address">
+                <p>107 P. Tô Hiệu, Nghĩa Tân, Cầu Giấy, Hà Nội</p>
+            </div>
+
+            <table class="data-table">
+                <tr class="table-head">
+                    <th>Mã</th>
+                    <th>Tên</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Tổng</th>
+                </tr>
+
+                <div class="line"></div>
+
+                @{
+                    if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.maHH</td>
+                                <td>@item.TenHH</td>
+                                <td>@item.soLuong</td>
+                                <td>@string.Format("{0:N0}", item.donGia)</td>
+                                <td>@string.Format("{0:N0}", item.donGia * item.soLuong)</td>
+                            </tr>
+                        }
+                    }
+                }
+            </table>
+
+            <div class="line"></div>
+
+            <div class="TotalPrice">
+                <h2>Tổng tiền:</h2>
+                <p>@string.Format("{0:N0}", total) VND</p>
+            </div>
+
+            <div class="bill-note">
+                <h2>Chúc quý khách một ngày tốt lành</h2>
+            </div>
+        </div>
+        <!-- Nút in hóa đơn -->
+        <div class="block-button">
+            <button onclick="printPage()">In Hóa Đơn</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        function printPage() {
+            window.print();
+        }
+    </script>
+</body>
+
+</html>

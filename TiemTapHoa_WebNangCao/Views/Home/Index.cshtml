@@ -1,0 +1,324 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.HoaDonView>
+
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities db = new TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities();
+
+    DateTime currentDate = DateTime.Now;
+    int currentMonth = currentDate.Month;
+    int currentYear = currentDate.Year;
+    int currentDay = currentDate.Day;
+
+    // truy vấn số lượng sản phẩm bán trong ngày và tháng
+    var sanPhamBanTrongNgay = db.ChiTietHDs.Join(db.HoaDons, cthd => cthd.MaHD, hd => hd.MaHD, (cthd, hd) => new { cthd, hd })
+        .Where(joinResult => joinResult.hd.NgayTao.Value.Month.Equals(currentMonth) && joinResult.hd.NgayTao.Value.Year.Equals(currentYear) && joinResult.hd.NgayTao.Value.Day.Equals(currentDay))
+        .Sum(joinResult => joinResult.cthd.SoLuong);
+
+    var sanPhamBanTrongThang = db.ChiTietHDs.Join(db.HoaDons, cthd => cthd.MaHD, hd => hd.MaHD, (cthd, hd) => new { cthd, hd })
+    .Where(joinResult => joinResult.hd.NgayTao.Value.Month.Equals(currentMonth) && joinResult.hd.NgayTao.Value.Year.Equals(currentYear))
+    .Sum(joinResult => joinResult.cthd.SoLuong);
+
+    // truy vấn doanh thu ngày và năm
+    var doanhThuNgay = db.HoaDons.Where(hd => hd.NgayTao.Value.Month.Equals(currentMonth) && hd.NgayTao.Value.Day.Equals(currentDay) && hd.NgayTao.Value.Year.Equals(currentYear)).Sum(hd => hd.TongTien);
+    var doanhThuNam = db.HoaDons.Where(hd => hd.NgayTao.Value.Year.Equals(currentYear)).Sum(hd => hd.TongTien);
+
+    // truy vấn top 5 sản phẩm bán chạy nhất
+    var top5Product = db.ChiTietHDs.Join(db.HoaDons, cthd => cthd.MaHD, hd => hd.MaHD, (cthd, hd) => new { cthd, hd })
+        .Join(db.HangHoas, joinResult => joinResult.cthd.MaHH, hh => hh.MaHH, (joinResult, hh) => new { joinResult.hd, joinResult.cthd, hh })
+        .Where(joinResult => joinResult.hd.NgayTao.Value.Month.Equals(currentMonth) && joinResult.hd.NgayTao.Value.Year.Equals(currentYear))
+        .GroupBy(joinResult => new { joinResult.hh.MaHH, joinResult.hh.TenHH })
+        .Select(joinResult => new
+        {
+            MaHH = joinResult.Key.MaHH,
+            TenHH = joinResult.Key.TenHH,
+            SoLuong = joinResult.Sum(m => m.cthd.SoLuong)
+        }).OrderByDescending(joinResult => joinResult.SoLuong).Take(5).ToList();
+
+
+    // truy vấn doanh thu theo từng tháng
+    var revenueEachMonth = db.HoaDons
+                           .Where(hd => hd.NgayTao.Value.Year.Equals(currentYear))
+                           .GroupBy(hd => new { hd.NgayTao.Value.Month, hd.NgayTao.Value.Year })
+                           .Select(hd => new
+                           {
+                               TongThu = hd.Sum(m => m.TongTien),
+                               Thang = hd.Key.Month
+                           }).ToList();
+    var InventoryCosts = db.PhieuNhaps
+                         .Where(pn => pn.NgayTao.Value.Year.Equals(currentYear))
+                         .GroupBy(pn => new { pn.NgayTao.Value.Month })
+                         .Select(pn => new
+                         {
+                             TongChi = pn.Sum(m => m.ThanhTien),
+                             Thang = pn.Key.Month
+                         }).ToList();
+
+
+}
+
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+<link rel="stylesheet" href="~/assets/CSS/dashboard.css" />
+
+<div class="content-main">
+    <div class="sale-and-revenue">
+        <div class="row">
+            <div class="col col-lg-3 col-md-6 col-12">
+                <div class="cardItem">
+                    <div class="cart-content">
+                        <h2 class="card-Number">@( sanPhamBanTrongNgay != null ? string.Format("{0:N0}", Double.Parse(sanPhamBanTrongNgay.ToString())) : "0")</h2>
+                        <span class="cardName">Bán trong ngày</span>
+                    </div>
+
+                    <div class="card-Icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-lg-3 col-md-6 col-12">
+                <div class="cardItem">
+                    <div class="cart-content">
+                        <h2 class="card-Number">
+                            @( sanPhamBanTrongThang != null ? string.Format("{0:N0}", Double.Parse(sanPhamBanTrongThang.ToString())) : "0")
+                        </h2>
+                        <span class="cardName">Bán trong tháng</span>
+                    </div>
+
+                    <div class="card-Icon">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-lg-3 col-md-6 col-12">
+                <div class="cardItem">
+                    <div class="cart-content">
+                        <h2 class="card-Number">@( doanhThuNgay != null ? string.Format("{0:N0}", Double.Parse(doanhThuNgay.ToString())) : "0")</h2>
+                        <span class="cardName">Doanh thu tháng (triệu)</span>
+                    </div>
+
+                    <div class="card-Icon">
+                        <i class="fa-solid fa-chart-area"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-lg-3 col-md-6 col-12">
+                <div class="cardItem">
+                    <div class="cart-content">
+                        <h2 class="card-Number">@( doanhThuNam != null ? string.Format("{0:N0}", Double.Parse(doanhThuNam.ToString())) : "0")</h2>
+                        <span class="cardName">Doanh thu năm (triệu)</span>
+                    </div>
+
+                    <div class="card-Icon">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-char">
+        <div class="row">
+            <div class="col col-lg-6 col-md-12 col-12">
+                <div class="chartItem">
+                    <h2 class="chartName">Top sản phẩm trong tháng</h2>
+
+                    <div class="chart-content">
+                        <div id="chart-top-product">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-lg-6 col-md-12 col-12">
+                <div class="chartItem">
+                    <h2 class="chartName">Thu chi trong năm</h2>
+
+                    <div class="chart-content">
+                        <div id="chart-revenue">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="billsBox">
+        <div class="billBox-Title">
+            <h2>Giao dịch gần đây</h2>
+
+            <button class="Btn">Xem thêm</button>
+        </div>
+
+        <div class="billBox-data">
+            <table class="data-table">
+                <tr class="table-head">
+                    <th>Ngày</th>
+                    <th>Người tạo</th>
+                    <th>Tổng tiền</th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@string.Format("{0:dd/MM/yyyy}", item.NgayTao)</td>
+                        <td>admin</td>
+                        <td>@string.Format("{0:N0}", item.TongTien)</td>
+                        <td class="data-table-control">
+                            <button class="Btn">Chi tiết</button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.js"
+        integrity="sha512-9ktqS1nS/L6/PPv4S4FdD2+guYGmKF+5DzxRKYkS/fV5gR0tXoDaLqqQ6V93NlTj6ITsanjwVWZ3xe6YkObIQQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    @{
+        // lấy dữ liệu để đẩy vào biểu đồ top sản phẩm
+        double[] soLuongBan = new double[5];
+        string[] tenSanPham = new string[5];
+        int i = 0;
+        foreach (var item in top5Product)
+        {
+            soLuongBan[i] = double.Parse(item.SoLuong.ToString());
+            tenSanPham[i] = item.TenHH;
+            i++;
+        }
+
+        string SoLuongBan = Newtonsoft.Json.JsonConvert.SerializeObject(soLuongBan);
+        string TenSanPham = Newtonsoft.Json.JsonConvert.SerializeObject(tenSanPham);
+
+        // lấy dữ liệu để đẩy vào biểu đồ thu chi trong năm
+        int count = revenueEachMonth.Last().Thang;
+        double[] tongDoanhThu = new double[count];
+        double[] tongChi = new double[count];
+        int[] thang = new int[count];
+
+        for (int z = 0; z < count; z++)
+        {
+            thang[z] = z + 1;
+        }
+
+        foreach (var item in revenueEachMonth)
+        {
+            int j = item.Thang;
+            tongDoanhThu[j-1] = double.Parse(item.TongThu.ToString());
+            tongChi[j-1] = 0;
+        }
+
+        foreach(var item in InventoryCosts)
+        {
+            int x = item.Thang;
+            tongChi[x-1] = double.Parse(item.TongChi.ToString());
+            x++;
+        }
+
+        string TongDoanhThu = Newtonsoft.Json.JsonConvert.SerializeObject(tongDoanhThu);
+        string TongChi = Newtonsoft.Json.JsonConvert.SerializeObject(tongChi);
+        string Thang = Newtonsoft.Json.JsonConvert.SerializeObject(thang);
+    }
+
+    let dataTopProduct = @Html.Raw(SoLuongBan);
+    let dataNameProeduct = @Html.Raw(TenSanPham);
+
+    let thang = @Html.Raw(Thang);
+    let tongDoanhThu = @Html.Raw(TongDoanhThu);
+    let tongChi = @Html.Raw(TongChi);
+    console.log(thang)
+    console.log(tongDoanhThu)
+    console.log(tongChi)
+
+    // Biểu đồ top sản phẩm trong tháng ==========================================================
+    var options = {
+        // cấu hinh loại biểu đồ
+        chart: {
+            type: 'bar',
+            toolbar: {
+                show: false,
+            },
+        },
+        // màu của các cột
+        colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3'],
+        // dữ liệu đầu vào của các cột
+        series: [{
+            name: 'số lượng',
+            data: dataTopProduct
+        }],
+        // cấu hình đồ họa cho cột (vd: chiều rộng, bo góc, ...)
+        plotOptions: {
+            bar: {
+                distributed: true,
+                borderRadius: 4,
+                horizontal: false,
+                columnWidth: '40%',
+            },
+        },
+        // cấu hình trục x
+        xaxis: {
+            categories: dataNameProeduct,
+            labels: {
+                show: false
+            }
+        },
+        // cấu hình các label (vị trí xuất hiện, màu chữ, ...)
+        legend: {
+            labels: {
+                colors: '#000000',
+            },
+            show: true,
+            position: 'top',
+        },
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart-top-product"), options);
+    chart.render();
+
+
+    // biểu đồ doanh thu trong năm (doanh thu, chi phí) ========================================================================================
+    var options1 = {
+        chart: {
+            type: 'area'
+        },
+        series: [
+            {
+                name: 'doanh thu (VNĐ)',
+                data: tongDoanhThu
+            },
+            {
+                name: 'tổng chi (VNĐ)',
+                data: tongChi
+            },
+        ],
+        xaxis: {
+            categories: thang
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        markers: {
+            size: 6,
+            strokeColors: '#fff',
+            strokeWidth: 2,
+        },
+        tooltip: {
+            shared: true,
+            intersect: false,
+            // theme: 'dark',
+        },
+    }
+
+    var chart = new ApexCharts(document.querySelector("#chart-revenue"), options1);
+
+    chart.render();
+</script>
+

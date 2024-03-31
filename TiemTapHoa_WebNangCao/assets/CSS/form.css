@@ -1,0 +1,157 @@
+﻿/* form =================================== */
+#form-add,
+#form-edit {
+}
+
+.form-info {
+    scrollbar-width: 20px;
+    flex: 1;
+}
+
+.form-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0;
+    font-size: 2.6rem;
+}
+
+.btn--close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 11px 14px;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.deck-form, .deck-form1 {
+    z-index: 3;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.6rem;
+    padding-bottom: 12px;
+}
+
+#form-add input[type="file"],
+#form-edit input[type="file"] {
+    margin-top: 8px;
+    max-width: 200px;
+    width: 100%;
+}
+
+.img__student {
+    max-width: 200px;
+    width: 100%;
+    min-height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    user-select: none;
+}
+
+.form__control {
+    display: block;
+    font-size: 1.6rem;
+    min-width: 100%;
+    padding: 6px 8px;
+    border-radius: 6px !important;
+    border: 1px solid var(--border-color);
+    outline-color: var(--blue);
+}
+
+#form-add input[type="file"],
+#form-edit input[type="file"],
+#form-add input[type="radio"],
+#form-edit input[type="radio"],
+#form-add input[type="checkbox"],
+#form-edit input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/*select + input ===================================*/
+.form__control-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group {
+    flex: 1,
+}
+
+.button-group {
+    padding: 0 8px;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+/*end ==============================================*/
+
+#gender,
+#gender-edit {
+    display: flex;
+}
+
+    #gender > div,
+    #gender-edit > div {
+        display: flex;
+        align-items: center;
+    }
+
+        #gender > div > label,
+        #gender-edit > div > label {
+            user-select: none;
+            padding: 6px 12px 6px 0;
+        }
+
+    #gender input[type="radio"],
+    #gender-edit input[type="radio"] {
+        padding: 8px;
+        margin-right: 4px;
+        position: relative;
+        top: 1px;
+        min-width: auto;
+    }
+
+.error-message {
+    font-size: 1.2rem;
+    color: red;
+}
+
+.form-label {
+    font-size: 1.6rem;
+}
+
+.input-required {
+    color: red;
+    margin-left: 4px;
+}
+
+.block-button {
+    display: flex;
+    justify-content: center;
+}
+
+.invalid .form__control {
+    border: 1px solid red;
+    background-color: #fbefef;
+}
+
+@media (max-width: 1013px) {
+
+    .form__control {
+        padding: 8px 12px;
+    }
+
+    .btn-submit {
+        padding: 9px 24px;
+    }
+}
+
+@media (max-width: 739px) {
+    #gender > div > label,
+    #gender-edit > div > label {
+        padding: 8px 12px 8px 0;
+    }
+}

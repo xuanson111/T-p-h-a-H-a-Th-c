@@ -1,0 +1,214 @@
+﻿@model TiemTapHoa_WebNangCao.Models.HangHoa
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities db = new TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities();
+    var loaiHH = db.HangHoas.Where(hh => hh.LoaiHangHoa != "" && hh.LoaiHangHoa != null).Select(hh => hh.LoaiHangHoa).Distinct();
+}
+
+<link rel="stylesheet" href="~/assets/CSS/form.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<style>
+    .form__control-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .input-group {
+        flex: 1,
+    }
+
+    .button-group {
+        padding: 0 8px;
+        font-size: 1.6rem;
+        cursor: pointer;
+    }
+</style>
+
+<div class="management">
+    <h2 class="title">Hàng hóa</h2>
+    <div class="link_body">
+        <a href="@Url.Action("Index", "HangHoa")">Hàng hóa</a>
+        <i class="fa-solid fa-angle-right"></i>
+        <a href="@Url.Action("Create", "HangHoa")">Thêm hàng hóa</a>
+    </div>
+</div>
+
+<form action="" id="form-edit" method="POST" class="management" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <h2 class="form-heading">Thêm hàng hóa</h2>
+
+    <div class="row form-info">
+        <div class="form-group col-lg-2 col-md-4 col-6">
+            <label class="form-label" for="avater">Chọn ảnh</label>
+            <img src="@Model.HinhAnh"
+                 class="img__student" alt="">
+            <input type="file" id="FileHinhAnh" name="FileHinhAnh" class="form__control" />
+            <span class="error-message"></span>
+        </div>
+
+        <div class="col-lg-10 col-md-8 col-6">
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label">Mã hàng hóa<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.MaHH, new { htmlAttributes = new { @class = "form__control", placeholder = "Mã hàng hóa" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label">Tên hàng hóa<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.TenHH, new { htmlAttributes = new { @class = "form__control", placeholder = "Tên hàng hóa" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="address">Loại hàng hóa<span class="input-required">*</span></label>
+
+                    <div class="form__control-group">
+                        <div class="input-group">
+                            <select id="LoaiHangHoa" name="LoaiHangHoa" class="form__control">
+                                <option value="">Chọn loại hàng hóa</option>
+                                @{
+                                    foreach (var loai in loaiHH)
+                                    {
+                                        <option value="@loai" selected="@(Model.LoaiHangHoa.ToString() == loai)">@loai</option>
+                                    }
+                                }
+                            </select>
+
+                            <input id="LoaiHangHoa_add" name="LoaiHangHoa" class="form__control" placeholder="Loại hàng hóa mới" style="display: none" , disabled />
+                        </div>
+
+                        <div class="button-group">
+                            <i class="icon-show fa-solid fa-plus"></i>
+                            <i class="icon-hide fa-solid fa-minus" style="display: none"></i>
+                        </div>
+                    </div>
+
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="phoneNumber">Số lượng</label>
+                    @Html.EditorFor(model => model.SoLuong, new { htmlAttributes = new { @class = "form__control", placeholder = "Số lượng" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="address">Đơn vị tính</label>
+                    @Html.EditorFor(model => model.DonVi, new { htmlAttributes = new { @class = "form__control", placeholder = "Đơn vị tính" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="accountNumber">Đơn giá</label>
+                    @Html.EditorFor(model => model.DonGia, new { htmlAttributes = new { @class = "form__control", placeholder = "Đơn giá", @type="number" } })
+                    <span class="error-message"></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="block-button">
+        <button class="Btn">Sửa</button>
+    </div>
+</form>
+
+<script src="~/assets/JS/Validator.js"></script>
+<script>
+    let img = document.querySelector('.form-group img');
+    let inputFile = document.querySelector('.form-group input[type="file"]');
+
+    inputFile.onchange = (e) => {
+        if (inputFile.files[0]) {
+            img.src = URL.createObjectURL(inputFile.files[0]);
+        }
+    }
+
+    Validator({
+        form: '#form-edit',
+        formGroupSelector: '.form-group',
+        errorSelector: '.error-message',
+        rules: [
+            Validator.isRequired('#MaHH'),
+            Validator.isRequired('#TenHH'),
+        ],
+        onSubmit(data) {
+            editHH()
+        }
+    });
+
+    function editHH() {
+        const form = document.querySelector('form')
+        const formData = new FormData();
+
+        formData.append('MaHH', form.querySelector('#MaHH').value);
+        formData.append('TenHH', form.querySelector('#TenHH').value);
+        formData.append('DonGia', form.querySelector('#DonGia').value);
+        formData.append('DonVi', form.querySelector('#DonVi').value);
+        formData.append('SoLuong', form.querySelector('#SoLuong').value);
+        formData.append('LoaiHangHoa', form.querySelector('[name="LoaiHangHoa"]:not([disabled])').value);
+        formData.append('FileHinhAnh', form.querySelector('#FileHinhAnh').files[0]);
+
+        $.ajax({
+            url: "/HangHoa/Edit",
+            type: "POST",
+            data: formData,
+            success: function (data) {
+                if (data.result) {
+                    Swal.fire({
+                        title: "Thêm thành công",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Thêm thất bại!",
+                        icon: "error",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                    })
+                }
+            },
+            processData: false,
+            contentType: false,
+            error: function (error) {
+                Swal.fire({
+                    title: "Thêm thất bại",
+                    icon: "error",
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                })
+            }
+        })
+    }
+
+    // Xử lý thêm loại hàng hóa
+    let inputSelectLoaiHH = document.querySelector('#form-edit #LoaiHangHoa');
+    let inputLoaiHH = document.querySelector('#form-edit #LoaiHangHoa_add');
+    let buttonShowHideInput = document.querySelector('#form-edit .button-group');
+    let buttonIconShow = buttonShowHideInput.querySelector('.icon-show');
+    let buttonIconHide = buttonShowHideInput.querySelector('.icon-hide');
+
+    buttonShowHideInput.onclick = () => {
+        if (buttonIconHide.style.display === "none") {
+            buttonIconHide.style.display = "block";
+            buttonIconShow.style.display = "none";
+            inputSelectLoaiHH.style.display = "none";
+            inputSelectLoaiHH.disabled = true;
+            inputLoaiHH.disabled = false;
+            inputLoaiHH.style.display = "block"
+        } else {
+            buttonIconHide.style.display = "none";
+            buttonIconShow.style.display = "block";
+            inputSelectLoaiHH.style.display = "block";
+            inputSelectLoaiHH.disabled = false;
+            inputLoaiHH.disabled = true;
+            inputLoaiHH.style.display = "none";
+        }
+    }
+</script>

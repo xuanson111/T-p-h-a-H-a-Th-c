@@ -1,0 +1,57 @@
+﻿@model IEnumerable<TiemTapHoa.Models.NhanVienView>
+
+<tr class="table-head">
+    <th></th>
+    <th>Mã</th>
+    <th>Họ tên</th>
+    <th>Ngày sinh</th>
+    <th>Email</th>
+    <th>SDT</th>
+    <th>Địa chỉ</th>
+    <th>Số tài khoản</th>
+    <th>Giới tính</th>
+    <th>Chức vụ</th>
+    <th></th>
+</tr>
+
+@{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@item.UrlHinhAnh" alt="">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaNV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenNV)
+            </td>
+            <td>
+                @string.Format("{0:dd/MM/yyyy}", item.NgaySinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SDT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiaChi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoTaiKhoan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GioiTinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenChucVu)
+            </td>
+            <td class="data-table-control">
+                <button onclick="location.href='@Url.Action("Edit", "NhanVien", new { id = item.MaNV })'" class="Btn">Sửa</button>
+                <button style="background-color:red" onclick="xoaChucVu(@item.MaNV)" class="Btn">Xóa</button>
+            </td>
+        </tr>
+    }
+}

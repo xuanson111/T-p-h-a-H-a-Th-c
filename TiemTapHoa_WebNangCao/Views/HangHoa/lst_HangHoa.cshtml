@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.HangHoa>
+
+<tr class="table-head">
+    <th></th>
+    <th>Mã</th>
+    <th>Tên hàng hóa</th>
+    <th>Loại</th>
+    <th>Số lượng</th>
+    <th>Đơn vị</th>
+    <th>Đơn giá</th>
+    <th></th>
+</tr>
+
+@{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@item.HinhAnh" alt="">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaHH)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenHH)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoaiHangHoa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonVi)
+            </td>
+            <td>
+                @string.Format("{0:N0}", item.DonGia)
+            </td>
+            <td class="data-table-control">
+                <button onclick="location.href='@Url.Action("Edit", "HangHoa", new { id = item.MaHH })'" class="Btn">Sửa</button>
+                <button style="background-color:red" onclick="xoaHH(@item.MaHH)" class="Btn">Xóa</button>
+            </td>
+        </tr>
+    }
+}

@@ -1,0 +1,121 @@
+﻿@model TiemTapHoa_WebNangCao.Models.NhaCungCap
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/assets/CSS/form.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<div class="management">
+    <h2 class="title">Thêm nhà cung cấp</h2>
+    <div class="link_body">
+        <a href="@Url.Action("Index", "NhaCungCap")">Nhà cung cấp</a>
+        <i class="fa-solid fa-angle-right"></i>
+        <a href="@Url.Action("Create", "NhaCungCap")">Thêm nhà cung cấp</a>
+    </div>
+</div>
+
+<form action="" id="form-add" class="management" method="POST">
+    @Html.AntiForgeryToken()
+    <h2 class="form-heading">Thêm nhà cung cấp</h2>
+
+    <div class="row form-info">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="TenNCC">Tên nhà cung cấp<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.TenNCC, new { htmlAttributes = new { @class = "form__control", placeholder = "Tên nhà cung cấp" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="SDT">Số điện thoại<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.SDT, new { htmlAttributes = new { @class = "form__control", placeholder = "Số điện thoại" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="DiaChi">Địa chỉ<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form__control", placeholder = "Địa chỉ" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="Email">Email<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form__control", placeholder = "Email" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="SoTaiKhoan">Số tài khoản</label>
+                    @Html.EditorFor(model => model.SoTaiKhoan, new { htmlAttributes = new { @class = "form__control", placeholder = "Số tài khoản" } })
+                    <span class="error-message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="block-button">
+        <button class="Btn">Thêm</button>
+    </div>
+</form>
+
+<script src="~/assets/JS/Validator.js"></script>
+<script>
+    Validator({
+        form: '#form-add',
+        formGroupSelector: '.form-group',
+        errorSelector: '.error-message',
+        rules: [
+            Validator.isRequired('#TenNCC'),
+
+            Validator.isRequired('#SDT'),
+
+            /*Validator.isRequired('#SoTaiKhoan'),*/
+
+            Validator.isRequired('#Email'),
+            Validator.isEmail('#Email'),
+
+            Validator.isRequired('#DiaChi'),
+
+        ],
+        onSubmit(data) {
+            createNCC(data)
+        }
+    });
+
+    function createNCC(ncc) {
+        $.ajax({
+            url: "/NhaCungCap/Create",
+            type: "POST",
+            data: ncc,
+            success: function (data) {
+                if (data.result) {
+                    Swal.fire({
+                        title: "Thêm thành công",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Thêm thất bại!",
+                        icon: "error",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                    })
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    title: "Thêm thất bại",
+                    icon: "error",
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                })
+            }
+        })
+    }
+</script>

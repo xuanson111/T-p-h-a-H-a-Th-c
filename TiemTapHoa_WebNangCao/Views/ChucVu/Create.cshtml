@@ -1,0 +1,99 @@
+﻿@model TiemTapHoa_WebNangCao.Models.ChucVu
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/assets/CSS/form.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<div class="management">
+    <h2 class="title">Thêm chức vụ</h2>
+    <div class="link_body">
+        <a href="@Url.Action("Index", "ChucVu")">Chức vụ</a>
+        <i class="fa-solid fa-angle-right"></i>
+        <a href="@Url.Action("Create", "ChucVu")">Thêm chức vụ</a>
+    </div>
+</div>
+
+<form action="" id="form-add" class="management" method="POST">
+    @Html.AntiForgeryToken()
+    <h2 class="form-heading">Thêm chức vụ</h2>
+
+    <div class="row form-info">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="TenCV">Tên chức vụ<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.TenCV, new { htmlAttributes = new { @class = "form__control", placeholder = "Tên chức vụ" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="LuongCV">Số điện thoại<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.LuongCV, new { htmlAttributes = new { @class = "form__control", placeholder = "Lương chức vụ", type="number" } })
+                    <span class="error-message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="block-button">
+        <button class="Btn">Thêm</button>
+    </div>
+</form>
+
+<script src="~/assets/JS/Validator.js"></script>
+<script>
+    Validator({
+        form: '#form-add',
+        formGroupSelector: '.form-group',
+        errorSelector: '.error-message',
+        rules: [
+            Validator.isRequired('#TenCV'),
+
+            Validator.isRequired('#LuongCV'),
+
+        ],
+
+        onSubmit(data) {
+            createCV(data)
+        }
+    });
+
+
+    function createCV(cv) {
+        $.ajax({
+            url: "/ChucVu/Create",
+            type: "POST",
+            data: cv,
+            success: function (data) {
+                if (data.result) {
+                    Swal.fire({
+                        title: "Thêm thành công",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Thêm thất bại!",
+                        icon: "error",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                    })
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    title: "Thêm thất bại",
+                    icon: "error",
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                })
+            }
+        })
+    }
+</script>
+

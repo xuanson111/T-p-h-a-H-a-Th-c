@@ -1,0 +1,213 @@
+﻿@model TiemTapHoa.Models.NhanVienView
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities db = new TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities();
+}
+
+<link rel="stylesheet" href="~/assets/CSS/form.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<div class="management">
+    <h2 class="title">Nhân viên</h2>
+    <div class="link_body">
+        <a href="@Url.Action("Index", "NhanVien")">Nhân viên</a>
+        <i class="fa-solid fa-angle-right"></i>
+        <a href="@Url.Action("Create", "NhanVien")">Sửa nhân viên</a>
+    </div>
+</div>
+
+<form action="" id="form-edit" method="POST" class="management" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <h2 class="form-heading">Sửa nhân viên</h2>
+
+
+    <div class="row form-info">
+        <div class="form-group col-lg-2 col-md-4 col-6">
+            <label class="form-label" for="avater">Chọn ảnh</label>
+            <img src="@Model.UrlHinhAnh"
+                 class="img__student" alt="">
+            <input type="file" id="FileHinhAnh" name="FileHinhAnh" class="form__control" />
+            <span class="error-message"></span>
+        </div>
+
+        <div class="col-lg-10 col-md-8 col-6">
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="fullname">Họ tên<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.MaNV, new { htmlAttributes = new { @class = "form__control", placeholder = "Mã nhân viên" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="fullname">Họ tên<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.TenNV, new { htmlAttributes = new { @class = "form__control", placeholder = "Họ tên" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label">Ngày sinh</label>
+                    @Html.EditorFor(model => model.NgaySinh, new { htmlAttributes = new { @class = "form__control", @type = "date" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="address">Email<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form__control", placeholder = "Email" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="phoneNumber">Số điện thoại<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.SDT, new { htmlAttributes = new { @class = "form__control", placeholder = "Số điện thoại" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="address">Địa chỉ<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form__control", placeholder = "Địa chỉ" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="accountNumber">Số tài khoản</label>
+                    @Html.EditorFor(model => model.SoTaiKhoan, new { htmlAttributes = new { @class = "form__control", placeholder = "Số tài khoản" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="position">Chức vụ<span class="input-required">*</span></label>
+                    <select id="ChucVu" name="ChucVu" class="form__control">
+                        <option value="">Chọn chức vụ</option>
+                        @{
+                            foreach (var cv in db.ChucVus)
+                            {
+                                if (Model.ChucVu != null && Model.ChucVu == cv.MaCV)
+                                {
+                                    <option value="@cv.MaCV" selected>@cv.TenCV</option>
+                                }
+                                else
+                                {
+                                    <option value="@cv.MaCV">@cv.TenCV</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label for="" class="form-label">Giới tính</label>
+                    <div id="gender">
+                        <div>
+                            <input id="gender--male" class="form__control" name="GioiTinh" type="radio"
+                                   value="nam" checked="@(Model.GioiTinh == "nam")">
+                            <label for="gender--male">Nam</label>
+                        </div>
+                        <div>
+                            <input id="gender--female" class="form__control" name="GioiTinh" type="radio"
+                                   value="nữ" checked="@(Model.GioiTinh == "nữ")">
+                            <label for="gender--female">Nữ</label>
+                        </div>
+                    </div>
+                    <span class="error-message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="block-button">
+        <button class="Btn">Sửa</button>
+    </div>
+</form>
+
+<script src="~/assets/JS/Validator.js"></script>
+<script>
+    let img = document.querySelector('.form-group img');
+    let inputFile = document.querySelector('.form-group input[type="file"]');
+
+    inputFile.onchange = (e) => {
+        if (inputFile.files[0]) {
+            img.src = URL.createObjectURL(inputFile.files[0]);
+        }
+    }
+
+    Validator({
+        form: '#form-edit',
+        formGroupSelector: '.form-group',
+        errorSelector: '.error-message',
+        rules: [
+            Validator.isRequired('#MaNV'),
+
+            Validator.isRequired('#TenNV'),
+
+            Validator.isImage('#FileHinhAnh'),
+
+            Validator.isRequired('#SDT'),
+
+            /*Validator.isRequired('#SoTaiKhoan'),*/
+
+            Validator.isRequired('#Email'),
+            Validator.isEmail('#Email'),
+
+            Validator.isRequired('#DiaChi'),
+
+            Validator.isRequired('#ChucVu'),
+        ],
+        onSubmit(data) {
+            editNV()
+        }
+    });
+
+    function editNV() {
+        const form = document.querySelector('form')
+
+        const formData = new FormData();
+
+        formData.append('MaNV', form.querySelector('#MaNV').value)
+        formData.append('TenNV', form.querySelector('#TenNV').value);
+        formData.append('NgaySinh', form.querySelector('#NgaySinh').value);
+        formData.append('Email', form.querySelector('#Email').value);
+        formData.append('SDT', form.querySelector('#SDT').value);
+        formData.append('DiaChi', form.querySelector('#DiaChi').value);
+        formData.append('SoTaiKhoan', form.querySelector('#SoTaiKhoan').value);
+        formData.append('ChucVu', form.querySelector('#ChucVu').value);
+        formData.append('GioiTinh', form.querySelector('[name="GioiTinh"]:checked') ? form.querySelector('[name="GioiTinh"]:checked').value : '');
+        formData.append('FileHinhAnh', form.querySelector('#FileHinhAnh').files[0]);
+
+        $.ajax({
+            url: "/NhanVien/Edit",
+            type: "POST",
+            data: formData,
+            success: function (data) {
+                if (data.result) {
+                    Swal.fire({
+                        title: "Sửa thành công",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Sửa thất bại!",
+                        icon: "error",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                    })
+                }
+            },
+            processData: false,
+            contentType: false,
+            error: function (error) {
+                Swal.fire({
+                    title: "Sửa thất bại",
+                    icon: "error",
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                })
+            }
+        })
+    }
+</script>
+

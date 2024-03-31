@@ -1,0 +1,218 @@
+﻿@model TiemTapHoa_WebNangCao.Models.BangLuongView
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities db = new TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities();
+}
+
+<link rel="stylesheet" href="~/assets/CSS/form.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<div class="link">
+    <h2 class="title">Chấm công</h2>
+    <div class="link_body">
+        <a href="@Url.Action("Index", "Home")">Home</a>
+        <i class="fa-solid fa-angle-right"></i>
+        <a href="@Url.Action("Index", "BangLuong")">Chấm công</a>
+        <i class="fa-solid fa-angle-right"></i>
+        <a href="@Url.Action("Create", "BangLuong")">Thêm bảng lương</a>
+    </div>
+</div>
+
+<form action="" id="form-add" method="POST" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <h2 class="form-heading">Thêm bảng lương</h2>
+    <div class="form-result">
+        @{
+            if (ViewBag.addSuccessBL != null)
+            {
+                <div class="success-form">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <p>@ViewBag.addSuccessBL</p>
+                </div>
+            }
+            else if (ViewBag.addErrorBL != null)
+            {
+                <div class="error-form">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <p>@ViewBag.addErrorBL</p>
+                </div>
+            }
+        }
+
+    </div>
+
+    <div class="row form-info">
+
+        <div class="col-lg-10 col-md-8 col-6">
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="position">Nhân viên<span class="input-required">*</span></label>
+                    <select id="NhanVien" name="NhanVien" class="form__control">
+                        <option value="">Chọn nhân viên</option>
+                        @{
+                            foreach (var nv in db.NhanViens)
+                            {
+                                <option value="@nv.MaNV">@nv.TenNV</option>
+                            }
+                        }
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="Thang">Tháng<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.Thang, new { htmlAttributes = new { @class = "form__control", placeholder = "Tháng" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="Nam"">Năm<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.Nam, new { htmlAttributes = new { @class = "form__control", placeholder = "Năm" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="SoNgayNghi">Số ngày nghỉ<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.SoNgayNghi, new { htmlAttributes = new { @class = "form__control", placeholder = "Số ngày nghỉ" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="TongSoNgay">Tổng số ngày<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.TongSoNgay, new { htmlAttributes = new { @class = "form__control", placeholder = "Tổng số ngày" } })
+                    <span class="error-message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="block-button">
+        <button class="btn-submit">Thêm</button>
+    </div>
+</form>
+
+<script src="~/assets/JS/Validator.js"></script>
+<script>
+
+    Validator({
+        form: '#form-add',
+        formGroupSelector: '.form-group',
+        errorSelector: '.error-message',
+        rules: [
+            Validator.isRequired('#Thang'),
+
+
+        ]
+    });
+</script>
+
+@*<h2>Create</h2>
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>BangLuongView</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.MaBL, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MaBL, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MaBL, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NhanVien, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NhanVien, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NhanVien, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TenNV, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TenNV, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TenNV, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Thang, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Thang, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Thang, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Nam, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Nam, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nam, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SoNgayNghi, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SoNgayNghi, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SoNgayNghi, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TongSoNgay, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TongSoNgay, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TongSoNgay, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Luong, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Luong, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Luong, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ChucVu, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ChucVu, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ChucVu, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LuongCV, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LuongCV, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LuongCV, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+*@

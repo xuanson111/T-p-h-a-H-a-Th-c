@@ -1,0 +1,78 @@
+﻿@model TiemTapHoa_WebNangCao.Models.ChiTietPhieuNhapView
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities db = new TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities();
+}
+
+<link rel="stylesheet" href="~/assets/CSS/form.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<div class="management">
+    <h2 class="title">Chi tiết phiếu nhập</h2>
+    <div class="link_body">
+        <a href="@Url.Action("Index", "PhieuNhap")">Phiếu nhập</a>
+        <i class="fa-solid fa-angle-right"></i>
+        <a href="@Url.Action("Details", "PhieuNhap")">Chi tiết Phiếu nhập</a>
+    </div>
+</div>
+
+<div id="form-edit" method="POST" class="management">
+    @Html.AntiForgeryToken()
+    <h2 class="form-heading">Chi tiết Phiếu nhập</h2>
+
+
+    <div class="row form-info">
+        <div class="col-lg-10 col-md-8 col-6">
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <dt><label class="form-label" for="fullname">Mã phiếu</label></dt>
+                    @Html.DisplayFor(model => model.MaPhieu)
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <dt>
+                        <label class="form-label" for="fullname">Nhà cung cấp</label>
+                    </dt>
+                    @Html.DisplayFor(model => model.TenNCC)
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <dt>
+                        <label class="form-label" for="fullname">Hàng hóa</label>
+                    </dt>
+                    @Html.DisplayFor(model => model.TenHH)
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <dt>
+                        <label class="form-label" for="fullname">Số lượng</label>
+                    </dt>
+                    @Html.DisplayFor(model => model.SoLuong)
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <dt>
+                        <label class="form-label" for="fullname">Đơn giá</label>
+                    </dt>
+                    @Html.DisplayFor(model => model.DonGia)
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <dt>
+                        <label class="form-label" for="fullname">Ngày tạo</label>
+                    </dt>
+                    @Html.DisplayFor(model => model.NgayTao)
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <dt>
+                        <label class="form-label" for="fullname">Thành tiền</label>
+                    </dt>
+                    @Html.DisplayFor(model => model.ThanhTien)
+                </div>
+
+            </div>
+        </div>
+    </div>

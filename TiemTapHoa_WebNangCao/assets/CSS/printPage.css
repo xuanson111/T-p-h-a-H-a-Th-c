@@ -1,0 +1,172 @@
+﻿#app {
+}
+
+#header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    padding: 12px 24px;
+    background-color: #32332c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    gap: 12px;
+    border-radius: 4px;
+}
+
+#header i,
+#header span {
+    color: #fff;
+    font-size: 2.4rem;
+}
+
+.logo-line {
+    width: 100%;
+    height: 10px;
+    background-color: #32332c;
+    margin-top: 4px;
+    border-radius: 4px;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px;
+}
+
+.billID {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+    .billID h2 {
+        margin: 0;
+        font-size: 2rem;
+    }
+
+    .billID p {
+        margin: 0;
+        font-size: 2rem;
+        margin-left: 4px;
+        font-weight: bold;
+    }
+
+.dateCreate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+    .dateCreate h2 {
+        margin: 0;
+        font-size: 1.6rem;
+    }
+
+    .dateCreate p {
+        margin: 0;
+        font-size: 1.6rem;
+        margin-left: 8px;
+    }
+
+.address {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 1.6rem;
+}
+
+.data-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 1.6rem;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+    .data-table th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border: none;
+    }
+
+    .data-table tr {
+        border-bottom: 1px dashed #ccc;
+    }
+
+        .data-table tr:last-child {
+            border: none
+        }
+
+.table-head {
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+}
+
+
+.line {
+    width: 100%;
+    margin: 16px 0;
+    border: 1px dashed #32332c;
+}
+
+.TotalPrice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .TotalPrice h2 {
+        margin: 0;
+        font-size: 2rem;
+    }
+
+    .TotalPrice p {
+        margin: 0;
+        font-size: 2.4rem;
+        font-weight: bold;
+    }
+
+.bill-note {
+    text-align: center;
+    margin-top: 20px;
+}
+
+    .bill-note h2 {
+        font-size: 1.6rem;
+        font-weight: 500;
+    }
+
+.block-button {
+    width: 100%;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+    .block-button button {
+        padding: 8px 16px;
+        border: none;
+        background-color: #1d89e4;
+        color: #fff;
+        font-size: 1.4rem;
+        border-radius: 4px;
+    }
+
+@media print {
+    html, body {
+        font-size: 1.3rem;
+    }
+
+    .block-button {
+        display: none;
+    }
+}

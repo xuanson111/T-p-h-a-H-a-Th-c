@@ -1,0 +1,39 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.NhaCungCap>
+
+<tr class="table-head">
+    <th>Mã</th>
+    <th>Tên</th>
+    <th>Địa chỉ</th>
+    <th>SDT</th>
+    <th>Email</th>
+    <th>Số tài khoản</th>
+    <th></th>
+</tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaNCC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TenNCC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DiaChi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SDT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SoTaiKhoan)
+        </td>
+        <td class="data-table-control">
+            <button onclick="location.href='@Url.Action("Edit", "NhaCungCap", new { id = item.MaNCC })'" class="Btn">Sửa</button>
+            <button style="background-color:red" onclick="xoaNhaCungCap(@item.MaNCC)" class="Btn">Xóa</button>
+        </td>
+    </tr>
+}

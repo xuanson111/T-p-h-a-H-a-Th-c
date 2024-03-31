@@ -1,0 +1,27 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.ChucVu>
+
+<tr class="table-head">
+    <th>Mã</th>
+    <th>Tên</th>
+    <th>Lương</th>
+    <th></th>
+</tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaCV)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TenCV)
+        </td>
+        <td>
+            @string.Format("{0:N0}", item.LuongCV)
+        </td>
+        <td class="data-table-control">
+            <button onclick="location.href='@Url.Action("Edit", "ChucVu", new { id = item.MaCV })'" class="Btn">Sửa</button>
+            <button style="background-color:red" onclick="xoaChucVu(@item.MaCV)" class="Btn">Xóa</button>
+        </td>
+    </tr>
+}

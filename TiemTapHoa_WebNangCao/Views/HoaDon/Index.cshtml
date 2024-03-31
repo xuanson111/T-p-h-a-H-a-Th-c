@@ -1,0 +1,283 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.HangHoa>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities db = new TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities();
+    var loaiHH = db.HangHoas.Where(hh => hh.LoaiHangHoa != "" && hh.LoaiHangHoa != null).Select(hh => hh.LoaiHangHoa).Distinct();
+    List<TiemTapHoa_WebNangCao.Models.ChiTietHDView> lst = new List<TiemTapHoa_WebNangCao.Models.ChiTietHDView>();
+}
+
+<link rel="stylesheet" href="~/assets/CSS/addBill.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+
+<div class="content-main">
+    <div class="product-menu shadow">
+        <div class="data" style="margin: 0; flex: 1; display: flex; flex-direction: column;">
+
+            <div class="data-management">
+                <div class="data-search">
+                    <form class="search-input" id="form-search">
+                        @Html.TextBox("searchString", null, new { placeholder = "Nhập tên hàng hóa" })
+                        <button type="submit" class="buttonSearch">Tìm kiếm</button>
+                    </form>
+
+                    <form class="search-filter" id="form-search-filter">
+                        <select name="filter" id="filter">
+                            <option value="0">Tất cả</option>
+                            @{
+                                foreach (var loai in loaiHH)
+                                {
+                                    <option value="@loai">@loai</option>
+                                }
+                            }
+                        </select>
+                    </form>
+                </div>
+            </div>
+
+            <div id="data-table" style="overflow-y: scroll; flex: 1;">
+                <table class="data-table">
+                    <tr class="table-head">
+                        <th></th>
+                        <th>Tên</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Đơn vị</th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@item.HinhAnh" />
+                            </td>
+                            <td>@item.TenHH</td>
+                            <td>@string.Format("{0:N0}", item.SoLuong)</td>
+                            <td>@string.Format("{0:N0}", item.DonGia)</td>
+                            <td>@item.DonVi</td>
+                            <td class="btn-in-table btn--addOrder" onclick="addOrder(@item.MaHH)">
+                                <span>Thêm</span>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="selected-product shadow">
+        <div class="button-clear">
+            <button onclick="clearLstOrder()">Clear</button>
+        </div>
+
+            <div class="selected-product-main">
+
+                @{
+                    if (Session["bill"] != null)
+                    {
+                        List<TiemTapHoa_WebNangCao.Models.ChiTietHDView> lstOrder = (List<TiemTapHoa_WebNangCao.Models.ChiTietHDView>)Session["bill"];
+                        foreach (var item in lstOrder)
+                        {
+                            <div class="selected-product-item">
+                                <div class="item-info">
+                                    <input class="item-order" value="@item.soThuTu" name="id" readonly></input>
+                                    <h2 class="item-name">@item.TenHH</h2>
+                                    <input type="number" value="@item.soLuong" name="itemQuantity" class="item-quantity">
+                                    <input value="@string.Format("{0:N0}", item.donGia)" name="itemPrice" class="item-price" readonly>
+                                    <input value="@string.Format("{0:N0}", item.donGia * item.soLuong)" name="itemTotal" class="item-total" readonly>
+                                </div>
+                                <div class="item-delete">
+                                    <a>
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+
+            </div>
+            <div class="selected-product-management">
+                <div class="bill-total">
+                    <h2 class="bill-total-title">Tổng tiền:</h2>
+                    <h2 class="bill-total-text">546,000</h2>
+                </div>
+                <div class="button-block">
+                    <button class="btn-pay-preview" onclick="printPreview()">
+                        <i class="fa-solid fa-print"></i>
+                        Xem trước
+                    </button>
+                    <button class="btn-pay" onclick="printAndPay()">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                        Thanh toán
+                    </button>
+                </div>
+            </div>
+
+    </div>
+</div>
+
+<script>
+    let btnAddOrders = document.querySelectorAll('.btn--addOrder');
+    let panelOrder = document.querySelector('.selected-product-main');
+
+    let formSearch = document.querySelector('#form-search');
+    let formSearch_Input = formSearch.querySelector('input');
+
+    let formSearchFilter = document.querySelector('#form-search-filter');
+    let formSearchFilter_select = formSearchFilter.querySelector('select');
+
+    let btnClear = document.querySelector(".button-clear button");
+    let btnDeletes = document.querySelectorAll(".item-delete");
+
+    let inputQuantitys = document.querySelectorAll('.item-quantity');
+
+    // Event ==================================================================
+    formSearchFilter_select.onchange = () => {
+        let searchString = formSearchFilter_select.value;
+        $.ajax({
+            url: "/HoaDon/Search",
+            type: "GET",
+            data: {
+                searchString: searchString,
+                isFilter: true
+            },
+            success: function (result) {
+                $("#data-table").html(result);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+    formSearch.onsubmit = (e) => {
+        e.preventDefault();
+        let searchString = formSearch_Input.value;
+        $.ajax({
+            url: "/HoaDon/Search",
+            type: "GET",
+            data: {
+                searchString: searchString,
+                isFilter: false
+            },
+            success: function (result) {
+                $("#data-table").html(result);
+            },
+            error: function (error) {
+                console.error("Error during search:", error);
+            }
+        })
+    }
+
+    function addOrder(id) {
+        $.ajax({
+            url: "/HoaDon/handleLstAddOrder",
+            type: "GET",
+            data: {
+                id: id,
+                quantity: 1,
+            },
+            success: function (result) {
+                $(".selected-product").html(result);
+            },
+            error: function (error) {
+                console.error("Error during search:", error);
+            }
+        })
+    }
+
+    function clearLstOrder() {
+        $.ajax({
+            url: "/HoaDon/clearOrder",
+            type: "GET",
+            data: {},
+            success: function (result) {
+                $(".selected-product").html(result);
+            },
+            error: function (error) {
+                console.error("Error during search:", error);
+            }
+        })
+    }
+
+    function printAndPay() {
+        $.ajax({
+            url: '/HoaDon/PrintPage', // Thay đổi theo đúng đường dẫn của Action trong Controller bạn muốn gọi
+            type: 'GET',
+            data: { isPay: 1 },
+            success: function (data) {
+                // Xử lý dữ liệu trả về (nếu cần)
+                // Mở trang mới trong tab mới
+                window.open('/HoaDon/PrintPage', '_blank');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi yêu cầu Ajax: ', error);
+            }
+        });
+    }
+
+    function printPreview() {
+        $.ajax({
+            url: '/HoaDon/PrintPage', 
+            type: 'GET',
+            data: { isPay: -1 },
+            success: function (data) {
+                window.open('/HoaDon/PrintPage', '_blank');
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi yêu cầu Ajax: ', error);
+            }
+        });
+    }
+
+    function deleteItem(id) {
+        $.ajax({
+            url: "/HoaDon/deleteItem",
+            type: "GET",
+            data: { id: id },
+            success: function (result) {
+                $(".selected-product").html(result);
+            },
+            error: function (error) {
+                console.error("Error during search:", error);
+            }
+        })
+    }
+
+    function updateOrderItem(id) {
+        let itemName = document.querySelector(`#MaHH_${id}`);
+        let quantity = itemName.parentElement.querySelector('input[name="itemQuantity"]').value;
+       
+        $.ajax({
+            url: "/HoaDon/handleLstUpdateOrder",
+            type: "GET",
+            data: {
+                id: id,
+                quantity: quantity,
+            },
+            success: function (result) {
+                $(".selected-product").html(result);
+            },
+            error: function (error) {
+                console.error("Error during search:", error);
+            }
+        })
+    }
+
+    //function ============================================
+    function getParent(element, selector) {
+        if (element) {
+            while (element.parentElement) {
+                if (element.parentElement.matches(selector)) {
+                    return element.parentElement;
+                }
+                element = element.parentElement;
+            }
+        }
+    }
+
+</script>

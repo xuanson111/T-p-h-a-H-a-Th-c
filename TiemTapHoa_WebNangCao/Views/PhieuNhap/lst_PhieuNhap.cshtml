@@ -1,0 +1,30 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.PhieuNhapView>
+
+<tr class="table-head">
+    <th>Mã phiếu</th>
+    <th>Tên Nhà cung cấp</th>
+    <th>Ngày tạo</th>
+    <th>Thành tiền</th>
+    <th></th>
+</tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaPhieu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TenNCC)
+        </td>
+        <td>
+            @string.Format("{0:dd/MM/yyyy}", item.NgayTao)
+        </td>
+        <td>
+            @string.Format("{0:N0}", item.ThanhTien)
+        </td>
+        <td class="data-table-control">
+            <button onclick="location.href='@Url.Action("Details", "PhieuNhap", new { id = item.MaPhieu })'" class="Btn">Chi tiết</button>
+        </td>
+    </tr>
+}

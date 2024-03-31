@@ -1,0 +1,190 @@
+﻿@model IEnumerable<TiemTapHoa.Models.NhanVienView>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities db = new TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities();
+}
+
+<link rel="stylesheet" href="~/assets/CSS/staff.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<div class="product-management management">
+    <h2 class="management-title">Danh sách hàng hóa</h2>
+
+    <div class="management-group">
+        <div class="search-group">
+            <form id="form_search">
+                <div class="search">
+                    @Html.TextBox("searchString", null, new { placeholder = "Nhập tên nhân viên" })
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <button type="submit" class="Btn">Tìm kiếm</button>
+            </form>
+
+            <form class="filter">
+                <select name="filter" id="filter">
+                    <option value="0" selected="@(ViewBag.cv == "0" || ViewBag.cv == "")">Tất cả</option>
+                    @{
+                        foreach (var cv in db.ChucVus)
+                        {
+                            <option value="@cv.MaCV" selected="@(ViewBag.cv == cv.MaCV.ToString())">@cv.TenCV</option>
+                        }
+                    }
+                </select>
+            </form>
+        </div>
+
+        <div class="btn-group">
+            <button class="Btn" onclick="location.href='@Url.Action("Create", "NhanVien")'">Thêm</button>
+        </div>
+    </div>
+</div>
+
+<div class="data">
+    <h2 class="data-title">Danh sách nhân viên</h2>
+
+    <table class="data-table">
+        <tr class="table-head">
+            <th></th>
+            <th>Mã</th>
+            <th>Họ tên</th>
+            <th>Ngày sinh</th>
+            <th>Email</th>
+            <th>SDT</th>
+            <th>Địa chỉ</th>
+            <th>Số tài khoản</th>
+            <th>Giới tính</th>
+            <th>Chức vụ</th>
+            <th></th>
+        </tr>
+
+        @{
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.UrlHinhAnh" alt="">
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaNV)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenNV)
+                    </td>
+                    <td>
+                        @string.Format("{0:dd/MM/yyyy}", item.NgaySinh)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SDT)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DiaChi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SoTaiKhoan)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GioiTinh)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenChucVu)
+                    </td>
+                    <td class="data-table-control">
+                        <button onclick="location.href='@Url.Action("Edit", "NhanVien", new { id = item.MaNV })'" class="Btn">Sửa</button>
+                        <button style="background-color:red" onclick="xoaNV(@item.MaNV)" class="Btn">Xóa</button>
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
+</div>
+
+<script>
+    let formFilter = document.querySelector('.filter');
+    let selectElement = formFilter.querySelector('#filter');
+
+    let formSearch = document.querySelector('#form_search');
+    let formSearch_Input = formSearch.querySelector('input');
+
+    formSearch.onsubmit = (e) => {
+        e.preventDefault();
+        loadCVData()
+    }
+
+    selectElement.onchange = () => {
+        loadCVData()
+    }
+
+    function loadCVData() {
+        const seletedIdx = selectElement.selectedIndex
+        const filter = selectElement[seletedIdx].value
+        const searchString = formSearch_Input.value
+        $.ajax({
+            url: "/NhanVien/Search",
+            type: "GET",
+            data: {
+                searchString,
+                filter,
+            },
+            success: function (result) {
+                $(".data-table").html(result);
+            },
+            error: function (error) {
+                console.error("Error during search:", error);
+            }
+        })
+    }
+
+    function xoaNV(idNV) {
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa nhân viên này",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#bf3010',
+            cancelButtonColor: '#1d89e4',
+            confirmButtonText: "Xóa",
+            cancelButtonText: "Không"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/NhanVien/Delete",
+                    type: "POST",
+                    data: {
+                        id: idNV
+                    },
+                    success: function (data) {
+                        if (data.result) {
+                            Swal.fire({
+                                title: "Xóa thành công",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1000
+                            })
+                            loadCVData()
+                        } else {
+                            Swal.fire({
+                                title: "Xóa thất bại!",
+                                icon: "error",
+                                showCancelButton: true,
+                                showConfirmButton: false,
+                            })
+                        }
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            title: "Xóa thất bại",
+                            icon: "error",
+                            showCancelButton: true,
+                            showConfirmButton: false,
+                        })
+                    }
+                })
+            }
+        })
+    }
+</script>

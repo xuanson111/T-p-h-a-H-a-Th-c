@@ -1,0 +1,133 @@
+﻿@model TiemTapHoa_WebNangCao.Models.ChiTietPhieuNhapView
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities db = new TiemTapHoa_WebNangCao.Models.DBTiemTapHoaEntities();
+}
+
+<link rel="stylesheet" href="~/assets/CSS/form.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<div class="management">
+    <h2 class="title">Tạo phiếu nhập</h2>
+    <div class="link_body">
+        <a href="@Url.Action("Index", "PhieuNhap")">Phiếu nhập</a>
+        <i class="fa-solid fa-angle-right"></i>
+        <a href="@Url.Action("Create", "PhieuNhap")">Tạo Phiếu nhập</a>
+    </div>
+</div>
+
+
+<form action="" id="form-add" method="POST" class="management" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <h2 class="form-heading">Thêm phiếu nhập</h2>
+
+    <div class="row form-info">
+        <div class="col-lg-10 col-md-8 col-6">
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="position">Nhà cung cấp<span class="input-required">*</span></label>
+                    <select id="MaNCC" name="MaNCC" class="form__control">
+                        <option value="">Chọn nhà cung cấp</option>
+                        @{
+                            foreach (var ncc in db.NhaCungCaps)
+                            {
+                                <option value="@ncc.MaNCC">@ncc.TenNCC</option>
+                            }
+                        }
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label" for="position">Hàng hóa<span class="input-required">*</span></label>
+                    <select id="HangHoa" name="HangHoa" class="form__control">
+                        <option value="">Chọn hàng hóa</option>
+                        @{
+                            foreach (var hh in db.HangHoas)
+                            {
+                                <option value="@hh.MaHH">@hh.TenHH</option>
+                            }
+                        }
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label">Số lượng<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.SoLuong, new { htmlAttributes = new { @class = "form__control", placeholder = "Số lượng" } })
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6 col-12">
+                    <label class="form-label">Đơn giá<span class="input-required">*</span></label>
+                    @Html.EditorFor(model => model.DonGia, new { htmlAttributes = new { @class = "form__control", placeholder = "Đơn giá" } })
+                    <span class="error-message"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="block-button">
+        <button class="Btn">Thêm</button>
+    </div>
+</form>
+
+<script src="~/assets/JS/Validator.js"></script>
+<script>
+
+    Validator({
+        form: '#form-add',
+        formGroupSelector: '.form-group',
+        errorSelector: '.error-message',
+        rules: [
+            Validator.isRequired('#MaNCC'),
+
+            Validator.isRequired('#HangHoa'),
+
+            Validator.isRequired('#SoLuong'),
+            Validator.isNumberAndMinValue('#SoLuong', 1),
+
+            /*Validator.isRequired('#SoTaiKhoan'),*/
+
+            Validator.isRequired('#DonGia'),
+        ],
+        onSubmit(data) {
+            createPH(data)
+        }
+    });
+
+    function createPH(ph) {
+        $.ajax({
+            url: "/PhieuNhap/Create",
+            type: "POST",
+            data: ph,
+            success: function (data) {
+                if (data.result) {
+                    Swal.fire({
+                        title: "Tạo thành công",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Tạo thất bại!",
+                        icon: "error",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                    })
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    title: "Tạo thất bại",
+                    icon: "error",
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                })
+            }
+        })
+    }
+</script>
