@@ -99,7 +99,42 @@
             Validator.isRequired('#Nam'),
             Validator.isRequired('#SoNgayNghi'),
             Validator.isRequired('#TongSoNgay'),
-
-        ]
+        ],
+        onSubmit(data) {
+            editBL(data)
+        }
     });
+
+    function editBL(cv) {
+        $.ajax({
+            url: "/BangLuong/Edit",
+            type: "POST",
+            data: cv,
+            success: function (data) {
+                if (data.result) {
+                    Swal.fire({
+                        title: "Sửa thành công",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Sửa thất bại!",
+                        icon: "error",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                    })
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    title: "Sửa thất bại",
+                    icon: "error",
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                })
+            }
+        })
+    }
 </script>

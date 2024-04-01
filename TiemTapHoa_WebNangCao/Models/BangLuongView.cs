@@ -33,6 +33,7 @@ namespace TiemTapHoa_WebNangCao.Models
                             select new BangLuongView
                             {
                                 MaBL = bl.MaBL,
+                                NhanVien = nv.MaNV,
                                 TenNV = nv.TenNV,
                                 Thang = bl.Thang,
                                 Nam = bl.Nam,
