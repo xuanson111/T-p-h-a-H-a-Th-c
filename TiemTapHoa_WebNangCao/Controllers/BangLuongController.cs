@@ -71,33 +71,31 @@ namespace TiemTapHoa_WebNangCao.Controllers
         [HttpPost]
         public ActionResult Edit(BangLuongView bl)
         {
-            var nhanVien = db.NhanViens.Find(bl.NhanVien);
-            var chucVu = db.ChucVus.Find(nhanVien.ChucVu);
-            double? luong = ((4500000 + chucVu.LuongCV) / bl.TongSoNgay) * (bl.TongSoNgay - bl.SoNgayNghi);
-            bl.Luong = luong.HasValue ? Math.Round(luong.Value) : 0;
-
-            BangLuong editbl = db.BangLuongs.Find(bl.MaBL);
-            editbl.MaNV = bl.NhanVien;
-            editbl.Thang = bl.Thang;
-            editbl.Nam = bl.Nam;
-            editbl.SoNgayNghi = bl.SoNgayNghi;
-            editbl.TongSoNgay = bl.TongSoNgay;
-
-            editbl.Luong = bl.Luong;
-
-
-
-
-            int rowAffected = db.SaveChanges();
-            if (rowAffected > 0)
+            try
             {
-                ViewBag.editSuccessBL = "Sửa thành công";
+                var nhanVien = db.NhanViens.Find(bl.NhanVien);
+                var chucVu = db.ChucVus.Find(nhanVien.ChucVu);
+                double? luong = ((4500000 + chucVu.LuongCV) / bl.TongSoNgay) * (bl.TongSoNgay - bl.SoNgayNghi);
+                bl.Luong = luong.HasValue ? Math.Round(luong.Value) : 0;
+
+                BangLuong editbl = db.BangLuongs.Find(bl.MaBL);
+                editbl.MaNV = bl.NhanVien;
+                editbl.Thang = bl.Thang;
+                editbl.Nam = bl.Nam;
+                editbl.SoNgayNghi = bl.SoNgayNghi;
+                editbl.TongSoNgay = bl.TongSoNgay;
+
+                editbl.Luong = bl.Luong;
+                int rowsAffected = db.SaveChanges();
+                if (rowsAffected > 0)
+                {
+                    return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ViewBag.editErrorBL = "Sửa thất bại, vui lòng kiểm tra lại thông tin";
             }
-            return View(bl);
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Delete(int id)
