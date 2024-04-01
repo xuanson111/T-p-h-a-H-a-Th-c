@@ -9,43 +9,29 @@
 <link rel="stylesheet" href="~/assets/CSS/staff.css" />
 <link rel="stylesheet" href="~/assets/CSS/management.css" />
 
-<div class="link">
-    <h2 class="title">Chấm công</h2>
-    <div class="link_body">
-        <a href="@Url.Action("Index", "Home")">Home</a>
-        <i class="fa-solid fa-angle-right"></i>
-        <a href="@Url.Action("Index", "BangLuong")">Chấm công</a>
+
+
+<div class="product-management management">
+    <h2 class="management-title">Danh sách bảng lương</h2>
+
+    <div class="management-group">
+        <div class="search-group">
+            <form id="form_search">
+                <div class="search">
+                    @Html.TextBox("searchString", null, new { placeholder = "Nhập tên nhân viên" })
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <button type="submit" class="Btn">Tìm kiếm</button>
+            </form>
+        </div>
+
+        <div class="btn-group">
+            <button class="Btn" onclick="location.href='@Url.Action("Create", "BangLuong")'">Thêm</button>
+        </div>
     </div>
 </div>
 
 <div class="data">
-    <h2 class="data-title">Danh sách Bảng lương</h2>
-
-    <div class="data-management">
-        <div class="data-search">
-            <form class="search-input">
-                @Html.TextBox("searchString", null, new { placeholder = "Nhập tên nhân viên" })
-                <button type="submit" class="buttonSearch">Tìm kiếm</button>
-            </form>
-
-            @*<form class="search-filter">
-            <select name="filter" id="filter">
-                <option value="0" selected="@(ViewBag.cv == "0" || ViewBag.cv == "")">Tất cả</option>
-                @{
-                    foreach (var cv in db.ChucVus)
-                    {
-                        <option value="@cv.MaCV" selected="@(ViewBag.cv == cv.MaCV.ToString())">@cv.TenCV</option>
-                    }
-                }
-            </select>
-            </form>*@
-        </div>
-
-        <div class="data-update">
-            <button class="Btn" onclick="location.href='@Url.Action("Create", "BangLuong")'">Thêm</button>
-        </div>
-    </div>
-
     <table class="data-table">
         <tr class="table-head">
             <th>Mã</th>
@@ -79,9 +65,9 @@
                     <td>
                         @string.Format("{0:N0}", item.Luong)
                     </td>
-                    <td>
-                        @Html.ActionLink("Sửa", "Edit", new { id = item.MaBL }) |
-                        @Html.ActionLink("Xóa", "Delete", new { id = item.MaBL })
+                    <td class="data-table-control">
+                        <button onclick="location.href='@Url.Action("Edit", "BangLuong", new { id = item.MaBL })'" class="Btn">Sửa</button>
+                        <button style="background-color:red" onclick="xoaChucVu(@item.MaBL)" class="Btn">Xóa</button>
                     </td>
                 </tr>
             }
@@ -91,68 +77,30 @@
 </div>
 
 <script>
-    let formFilter = document.querySelector('.search-filter');
-    let selectElement = formFilter.querySelector('#filter');
+    let formSearch = document.querySelector('#form_search');
+    let formSearch_Input = formSearch.querySelector('input');
 
     selectElement.onchange = () => {
-        formFilter.submit();
+        e.preventDefault();
+        let searchStr = formSearch_Input.value;
+        loadBLData(searchStr)
+    }
+
+    function loadBLData(searchString) {
+        $.ajax({
+            url: "/ChucVu/Search",
+            type: "GET",
+            data: {
+                searchString,
+            },
+            success: function (result) {
+                $("#data-table").html(result);
+            },
+            error: function (error) {
+                console.error("Error during search:", error);
+            }
+        })
     }
 </script>
 
-@*<h2>Index</h2>
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Thang)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nam)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Luong)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoNgayNghi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TongSoNgay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NhanVien.TenNV)
-            </th>
-            <th></th>
-        </tr>
-
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Thang)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Luong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoNgayNghi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TongSoNgay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NhanVien.TenNV)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.MaBL }) |
-                @Html.ActionLink("Details", "Details", new { id=item.MaBL }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.MaBL })
-            </td>
-        </tr>
-    }
-
-    </table> *@
