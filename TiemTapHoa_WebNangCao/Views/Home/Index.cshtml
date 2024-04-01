@@ -234,9 +234,6 @@
     let thang = @Html.Raw(Thang);
     let tongDoanhThu = @Html.Raw(TongDoanhThu);
     let tongChi = @Html.Raw(TongChi);
-    console.log(thang)
-    console.log(tongDoanhThu)
-    console.log(tongChi)
 
     // Biểu đồ top sản phẩm trong tháng ==========================================================
     var options = {
@@ -280,8 +277,8 @@
         },
     };
 
-    var chart = new ApexCharts(document.querySelector("#chart-top-product"), options);
-    chart.render();
+    var chart1 = new ApexCharts(document.querySelector("#chart-top-product"), options);
+    chart1.render();
 
 
     // biểu đồ doanh thu trong năm (doanh thu, chi phí) ========================================================================================
@@ -318,7 +315,6 @@
     }
 
     var chart = new ApexCharts(document.querySelector("#chart-revenue"), options1);
-
     chart.render();
 </script>
 
