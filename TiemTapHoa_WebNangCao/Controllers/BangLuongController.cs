@@ -56,25 +56,7 @@ namespace TiemTapHoa_WebNangCao.Controllers
 
         public ActionResult Edit(int id)
         {
-            var bangLuong = from nv in db.NhanViens
-                            join bl in db.BangLuongs
-                            on nv.MaNV equals bl.MaNV
-                            join cv in db.ChucVus
-                            on nv.ChucVu equals cv.MaCV
-                            select new BangLuongView
-                            {
-                                MaBL = bl.MaBL,
-                                NhanVien = nv.MaNV,
-                                TenNV = nv.TenNV,
-                                Thang = bl.Thang,
-                                Nam = bl.Nam,
-                                SoNgayNghi = bl.SoNgayNghi,
-                                TongSoNgay = bl.TongSoNgay,
-                                Luong = bl.Luong,
-                                ChucVu = cv.MaCV,
-                                LuongCV = cv.LuongCV,
-                            };
-            BangLuongView bl1 = bangLuong.FirstOrDefault(m => m.MaBL.Equals(id));
+            BangLuongView bl1 = blv.getData().FirstOrDefault(m => m.MaBL.Equals(id));
             return View(bl1);
         }
         [HttpPost]

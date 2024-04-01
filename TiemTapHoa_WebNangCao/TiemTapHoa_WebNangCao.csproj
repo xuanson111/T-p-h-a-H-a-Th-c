@@ -336,6 +336,7 @@
     <Content Include="Views\NhaCungCap\lst_NhaCungCap.cshtml" />
     <Content Include="Views\HangHoa\lst_HangHoa.cshtml" />
     <Content Include="Views\PhieuNhap\lst_PhieuNhap.cshtml" />
+    <Content Include="Views\BangLuong\lst_BangLuong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.BangLuongView>
+
+<tr class="table-head">
+    <th>Mã</th>
+    <th>Họ tên</th>
+    <th>Tháng</th>
+    <th>Năm</th>
+    <th>Số ngày nghỉ</th>
+    <th>Lương</th>
+    <th></th>
+</tr>
+
+@{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaBL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenNV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Thang)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoNgayNghi)
+            </td>
+            <td>
+                @string.Format("{0:N0}", item.Luong)
+            </td>
+            <td class="data-table-control">
+                <button onclick="location.href='@Url.Action("Edit", "BangLuong", new { id = item.MaBL })'" class="Btn">Sửa</button>
+                <button style="background-color:red" onclick="xoaChucVu(@item.MaBL)" class="Btn">Xóa</button>
+            </td>
+        </tr>
+    }
+}
