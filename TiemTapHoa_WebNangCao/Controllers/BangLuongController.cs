@@ -18,12 +18,18 @@ namespace TiemTapHoa_WebNangCao.Controllers
         {
             Session["page"] = "BangLuong";
             var bangLuong = blv.getData();
+            return View(bangLuong);
+        }
+
+        public ActionResult Search(string searchString)
+        {
+            var bangLuong = blv.getData();
             if (!string.IsNullOrEmpty(searchString))
             {
                 var nvLst = bangLuong.Where(nv => nv.TenNV.ToLower().Contains(searchString.ToLower()));
-                return View(nvLst);
+                return PartialView("lst_BangLuong", nvLst);
             }
-            return View(bangLuong);
+            return PartialView("lst_BangLuong", bangLuong);
         }
 
         public ActionResult Create()
@@ -93,11 +99,20 @@ namespace TiemTapHoa_WebNangCao.Controllers
 
         public ActionResult Delete(int id)
         {
-            BangLuong BL = db.BangLuongs.Find(id);
-
-            db.BangLuongs.Remove(BL);
-            db.SaveChanges();
-            return RedirectToAction("Index", "BangLuong");
+            try
+            {
+                BangLuong BL = db.BangLuongs.Find(id);
+                db.BangLuongs.Remove(BL);
+                int rowsAffected = db.SaveChanges();
+                if (rowsAffected > 0)
+                {
+                    return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
     }
 }

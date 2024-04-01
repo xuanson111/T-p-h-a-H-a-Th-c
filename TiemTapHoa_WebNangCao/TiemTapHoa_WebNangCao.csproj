@@ -324,7 +324,6 @@
     <Content Include="Views\PhieuNhap\Details.cshtml" />
     <Content Include="Views\PhieuNhap\Index.cshtml" />
     <Content Include="Views\BangLuong\Create.cshtml" />
-    <Content Include="Views\BangLuong\Create1.cshtml" />
     <Content Include="Views\BangLuong\Edit.cshtml" />
     <Content Include="Views\BangLuong\Index.cshtml" />
     <Content Include="Views\NhaCungCap\Edit.cshtml" />

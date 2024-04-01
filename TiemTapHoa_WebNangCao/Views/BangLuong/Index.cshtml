@@ -32,7 +32,7 @@
 </div>
 
 <div class="data">
-    <table class="data-table">
+    <table class="data-table" id="data-table">
         <tr class="table-head">
             <th>Mã</th>
             <th>Họ tên</th>
@@ -67,7 +67,7 @@
                     </td>
                     <td class="data-table-control">
                         <button onclick="location.href='@Url.Action("Edit", "BangLuong", new { id = item.MaBL })'" class="Btn">Sửa</button>
-                        <button style="background-color:red" onclick="xoaChucVu(@item.MaBL)" class="Btn">Xóa</button>
+                        <button style="background-color:red" onclick="xoaBL(@item.MaBL)" class="Btn">Xóa</button>
                     </td>
                 </tr>
             }
@@ -80,7 +80,7 @@
     let formSearch = document.querySelector('#form_search');
     let formSearch_Input = formSearch.querySelector('input');
 
-    selectElement.onchange = () => {
+    formSearch.onsubmit = (e) => {
         e.preventDefault();
         let searchStr = formSearch_Input.value;
         loadBLData(searchStr)
@@ -88,7 +88,7 @@
 
     function loadBLData(searchString) {
         $.ajax({
-            url: "/ChucVu/Search",
+            url: "/BangLuong/Search",
             type: "GET",
             data: {
                 searchString,
@@ -98,6 +98,55 @@
             },
             error: function (error) {
                 console.error("Error during search:", error);
+            }
+        })
+    }
+
+    function xoaBL(idCV) {
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa bảng lương này",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#bf3010',
+            cancelButtonColor: '#1d89e4',
+            confirmButtonText: "Xóa",
+            cancelButtonText: "Không"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/BangLuong/Delete",
+                    type: "POST",
+                    data: {
+                        id: idCV
+                    },
+                    success: function (data) {
+                        if (data.result) {
+                            Swal.fire({
+                                title: "Xóa thành công",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1000
+                            })
+                            let searchStr = formSearch_Input.value;
+                            loadBLData(searchStr)
+                        } else {
+                            Swal.fire({
+                                title: "Xóa thất bại!",
+                                icon: "error",
+                                showCancelButton: true,
+                                showConfirmButton: false,
+                            })
+                        }
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            title: "Xóa thất bại",
+                            icon: "error",
+                            showCancelButton: true,
+                            showConfirmButton: false,
+                        })
+                    }
+                })
             }
         })
     }
