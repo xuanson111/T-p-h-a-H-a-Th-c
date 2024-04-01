@@ -9,39 +9,18 @@
 <link rel="stylesheet" href="~/assets/CSS/form.css" />
 <link rel="stylesheet" href="~/assets/CSS/management.css" />
 
-<div class="link">
-    <h2 class="title">Chấm công</h2>
+<div class="management">
+    <h2 class="title">Sửa bảng lương</h2>
     <div class="link_body">
-        <a href="@Url.Action("Index", "Home")">Home</a>
-        <i class="fa-solid fa-angle-right"></i>
         <a href="@Url.Action("Index", "BangLuong")">Chấm công</a>
         <i class="fa-solid fa-angle-right"></i>
         <a href="@Url.Action("Edit", "BangLuong")">Sửa bảng lương</a>
     </div>
 </div>
 
-<form action="" id="form-edit" method="POST" enctype="multipart/form-data">
+<form action="" id="form-edit" class="management" method="POST" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
     <h2 class="form-heading">Sửa bảng lương</h2>
-    <div class="form-result">
-        @{
-            if (ViewBag.addSuccessBL != null)
-            {
-                <div class="success-form">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <p>@ViewBag.addSuccessBL</p>
-                </div>
-            }
-            else if (ViewBag.addErrorBL != null)
-            {
-                <div class="error-form">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    <p>@ViewBag.addErrorBL</p>
-                </div>
-            }
-        }
-
-    </div>
 
     <div class="row form-info">
         <div class="col-lg-10 col-md-8 col-6">
@@ -101,7 +80,7 @@
     </div>
 
     <div class="block-button">
-        <button class="btn-submit">Sửa</button>
+        <button class="Btn">Sửa</button>
     </div>
 </form>
 
