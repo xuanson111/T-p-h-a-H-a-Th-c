@@ -23,5 +23,24 @@ namespace TiemTapHoa_WebNangCao.Models
         public Nullable<int> ChucVu { get; set; }
 
         public Nullable<double> LuongCV { get; set; }
+
+        public List<BangLuongView> getData()
+        {
+            DBTiemTapHoaEntities db = new DBTiemTapHoaEntities();
+            var bangLuong = from nv in db.NhanViens
+                            join bl in db.BangLuongs
+                            on nv.MaNV equals bl.MaNV
+                            select new BangLuongView
+                            {
+                                MaBL = bl.MaBL,
+                                TenNV = nv.TenNV,
+                                Thang = bl.Thang,
+                                Nam = bl.Nam,
+                                SoNgayNghi = bl.SoNgayNghi,
+                                TongSoNgay = bl.TongSoNgay,
+                                Luong = bl.Luong,
+                            };
+            return bangLuong.ToList();
+        }
     }
 }

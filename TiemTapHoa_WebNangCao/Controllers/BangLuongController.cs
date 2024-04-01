@@ -13,34 +13,16 @@ namespace TiemTapHoa_WebNangCao.Controllers
     public class BangLuongController : Controller
     {
         DBTiemTapHoaEntities db = new DBTiemTapHoaEntities();
+        BangLuongView blv = new BangLuongView();
         public ActionResult Index(string searchString, string filter)
         {
             Session["page"] = "BangLuong";
-            var bangLuong = from nv in db.NhanViens
-                            join bl in db.BangLuongs
-                            on nv.MaNV equals bl.MaNV
-                            select new BangLuongView
-                            {
-                                MaBL = bl.MaBL,
-                                TenNV = nv.TenNV,
-                                Thang = bl.Thang,
-                                Nam = bl.Nam,
-                                SoNgayNghi = bl.SoNgayNghi,
-                                TongSoNgay = bl.TongSoNgay,
-                                Luong = bl.Luong,
-                            };
+            var bangLuong = blv.getData();
             if (!string.IsNullOrEmpty(searchString))
             {
                 var nvLst = bangLuong.Where(nv => nv.TenNV.ToLower().Contains(searchString.ToLower()));
                 return View(nvLst);
             }
-            // if (!string.IsNullOrEmpty(filter))
-            //{
-            //   ViewBag.cv = filter;
-            //   if (filter == "0") return View(nhanVien);
-            //   var nvLst = nhanVien.Where(nv => nv.ChucVu.ToString().ToLower().Contains(filter.ToLower()));
-            //   return View(nvLst);
-            //}
             return View(bangLuong);
         }
 
