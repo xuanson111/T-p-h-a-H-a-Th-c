@@ -9,11 +9,9 @@
 <link rel="stylesheet" href="~/assets/CSS/form.css" />
 <link rel="stylesheet" href="~/assets/CSS/management.css" />
 
-<div class="link">
-    <h2 class="title">Chấm công</h2>
+<div class="management">
+    <h2 class="title">Thêm bảng lương</h2>
     <div class="link_body">
-        <a href="@Url.Action("Index", "Home")">Home</a>
-        <i class="fa-solid fa-angle-right"></i>
         <a href="@Url.Action("Index", "BangLuong")">Chấm công</a>
         <i class="fa-solid fa-angle-right"></i>
         <a href="@Url.Action("Create", "BangLuong")">Thêm bảng lương</a>
@@ -23,25 +21,6 @@
 <form action="" id="form-add" method="POST" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
     <h2 class="form-heading">Thêm bảng lương</h2>
-    <div class="form-result">
-        @{
-            if (ViewBag.addSuccessBL != null)
-            {
-                <div class="success-form">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <p>@ViewBag.addSuccessBL</p>
-                </div>
-            }
-            else if (ViewBag.addErrorBL != null)
-            {
-                <div class="error-form">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    <p>@ViewBag.addErrorBL</p>
-                </div>
-            }
-        }
-
-    </div>
 
     <div class="row form-info">
 
