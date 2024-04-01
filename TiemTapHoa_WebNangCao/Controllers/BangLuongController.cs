@@ -40,24 +40,27 @@ namespace TiemTapHoa_WebNangCao.Controllers
         [HttpPost]
         public ActionResult Create(BangLuongView bl)
         {
-            Session["page"] = "BangLuong";
-            var nhanVien = db.NhanViens.Find(bl.NhanVien);
-            var chucVu = db.ChucVus.Find(nhanVien.ChucVu);
-            double? luong = ((4500000 + chucVu.LuongCV) / bl.TongSoNgay) * (bl.TongSoNgay - bl.SoNgayNghi);
-            bl.Luong = luong.HasValue ? Math.Round(luong.Value) : 0;
-            BangLuong addBL = new BangLuong(bl.MaBL, bl.NhanVien, bl.Thang, bl.Nam, bl.SoNgayNghi, bl.TongSoNgay, bl.Luong);
+            try
+            {
+                Session["page"] = "BangLuong";
+                var nhanVien = db.NhanViens.Find(bl.NhanVien);
+                var chucVu = db.ChucVus.Find(nhanVien.ChucVu);
+                double? luong = ((4500000 + chucVu.LuongCV) / bl.TongSoNgay) * (bl.TongSoNgay - bl.SoNgayNghi);
+                bl.Luong = luong.HasValue ? Math.Round(luong.Value) : 0;
+                BangLuong addBL = new BangLuong(bl.MaBL, bl.NhanVien, bl.Thang, bl.Nam, bl.SoNgayNghi, bl.TongSoNgay, bl.Luong);
 
-            db.BangLuongs.Add(addBL);
-            int rowAffected = db.SaveChanges();
-            if (rowAffected > 0)
-            {
-                ViewBag.addSuccessBL = "Thêm thành công";
+                db.BangLuongs.Add(addBL);
+                int rowsAffected = db.SaveChanges();
+                if (rowsAffected > 0)
+                {
+                    return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ViewBag.addErrorBL = "Thêm thất bại, vui lòng kiểm tra lại thông tin";
             }
-            return View(bl);
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
+
         }
 
         public ActionResult Edit(int id)

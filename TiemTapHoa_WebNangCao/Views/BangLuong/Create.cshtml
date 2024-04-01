@@ -90,7 +90,43 @@
             Validator.isNumberAndMinValue('#SoNgayNghi', 0),
             Validator.isRequired('#TongSoNgay'),
             Validator.isNumberAndMinValue('#TongSoNgay', 1),
-        ]
+        ],
+        onSubmit(data) {
+            createBL(data)
+        }
     });
+
+    function createBL(cv) {
+        $.ajax({
+            url: "/BangLuong/Create",
+            type: "POST",
+            data: cv,
+            success: function (data) {
+                if (data.result) {
+                    Swal.fire({
+                        title: "Thêm thành công",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Thêm thất bại!",
+                        icon: "error",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                    })
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    title: "Thêm thất bại",
+                    icon: "error",
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                })
+            }
+        })
+    }
 </script>
 
