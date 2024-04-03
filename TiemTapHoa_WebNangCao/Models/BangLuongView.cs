@@ -7,7 +7,6 @@ using System.Web.Mvc;
 
 namespace TiemTapHoa_WebNangCao.Models
 {
-    [Authorize]
     public class BangLuongView
     {
         public int MaBL { get; set; }
