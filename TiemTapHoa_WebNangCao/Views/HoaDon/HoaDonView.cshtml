@@ -1,0 +1,72 @@
+﻿@model IEnumerable<TiemTapHoa_WebNangCao.Models.HoaDonView>
+
+<link rel="stylesheet" href="~/assets/CSS/supplier.css" />
+<link rel="stylesheet" href="~/assets/CSS/management.css" />
+
+<title>Quản lý chức vụ</title>
+
+
+<div class="product-management management">
+    <h2 class="management-title">Danh sách hóa đơn</h2>
+
+    <div class="management-group">
+        <div class="search-group">
+
+        </div>
+
+        <div class="btn-group">
+            <button class="Btn" onclick="location.href='@Url.Action("Create", "ChucVu")'">Thêm</button>
+        </div>
+    </div>
+</div>
+
+<div class="data">
+    <table class="data-table" id="data-table">
+        <tr class="table-head">
+            <th>Mã HD</th>
+            <th>Ngày tạo</th>
+            <th>Tổng tiền</th>
+            <th>Người tạo</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaHD)
+                </td>
+                <td>
+                    @string.Format("{0:dd/MM/yyyy}", item.NgayTao)
+                </td>
+                <td>
+                    @string.Format("{0:N0}", item.TongTien)
+                </td>
+                <td>
+                    admin
+                </td>
+                <td class="data-table-control">
+                    <button onclick="location.href='@Url.Action("HoaDonView", "HoaDon", new { id = item.MaHD })'" class="Btn">Chi tiết</button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    function loadCVData(searchString) {
+        $.ajax({
+            url: "/HoaDon/Search",
+            type: "GET",
+            data: {
+                searchString,
+            },
+            success: function (result) {
+                $("#data-table").html(result);
+            },
+            error: function (error) {
+                console.error("Error during search:", error);
+            }
+        })
+    }
+
+</script>

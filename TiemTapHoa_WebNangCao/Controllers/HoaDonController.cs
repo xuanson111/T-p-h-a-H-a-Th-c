@@ -150,5 +150,13 @@ namespace TiemTapHoa_WebNangCao.Controllers
             else return false;
         }
 
+        public ActionResult HoaDonView()
+        {
+            HoaDonView hd = new HoaDonView();
+            var Bills = hd.getData();
+            Session["page"] = "HoaDon";
+            return View(Bills);
+        }
+
     }
 }

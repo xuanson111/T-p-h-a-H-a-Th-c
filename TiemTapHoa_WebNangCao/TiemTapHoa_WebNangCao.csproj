@@ -336,6 +336,8 @@
     <Content Include="Views\HangHoa\lst_HangHoa.cshtml" />
     <Content Include="Views\PhieuNhap\lst_PhieuNhap.cshtml" />
     <Content Include="Views\BangLuong\lst_BangLuong.cshtml" />
+    <Content Include="Views\HoaDon\HoaDonView.cshtml" />
+    <Content Include="Views\HoaDon\lst_HoaDonView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
