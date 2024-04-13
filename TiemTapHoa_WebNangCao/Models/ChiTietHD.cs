@@ -14,13 +14,6 @@ namespace TiemTapHoa_WebNangCao.Models
     
     public partial class ChiTietHD
     {
-        public ChiTietHD(int maHD, int maHH, double? soLuong)
-        {
-            MaHD = maHD;
-            MaHH = maHH;
-            SoLuong = soLuong;
-        }
-
         public int MaHD { get; set; }
         public int MaHH { get; set; }
         public Nullable<double> SoLuong { get; set; }

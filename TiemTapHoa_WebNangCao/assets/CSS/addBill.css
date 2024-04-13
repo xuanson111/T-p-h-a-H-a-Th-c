@@ -7,14 +7,24 @@
     height: 100%;
 }
 
+.product-menu {
+    width: 50%;
+    height: 100%;
+    min-height: calc(100vh - 100px);
+    background-color: var(--white);
+    padding: 24px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, .3);
+}
 
-.product-menu,
+
 .selected-product {
     width: 50%;
     background-color: #ffff;
     height: 100%;
     min-height: calc(100vh - 100px);
-    border-radius: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, .3);
 }
 
 /* product menu =================================== */
@@ -178,6 +188,7 @@
     .selected-product {
         width: 100%;
         min-height: 500px;
+        margin-bottom: 8px;
     }
 }
 

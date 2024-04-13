@@ -11,36 +11,15 @@ namespace TiemTapHoa_WebNangCao.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class ChiTietPhieuNhap
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ChiTietPhieuNhap()
-        {
-            this.PhieuNhaps = new HashSet<PhieuNhap>();
-            this.HangHoas = new HashSet<HangHoa>();
-        }
-
-        public ChiTietPhieuNhap(int maPhieu, int? hangHoa, double? soLuong, double? donGia)
-        {
-            MaPhieu = maPhieu;
-            MaHH = hangHoa;
-            SoLuong = soLuong;
-            DonGia = donGia;
-        }
         public int MaPhieu { get; set; }
-        public Nullable<int> MaHH { get; set; }
+        public int MaHH { get; set; }
         public Nullable<double> SoLuong { get; set; }
         public Nullable<double> DonGia { get; set; }
-
-
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PhieuNhap> PhieuNhaps { get; set; }
+    
         public virtual PhieuNhap PhieuNhap { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HangHoa> HangHoas { get; set; }
         public virtual HangHoa HangHoa { get; set; }
     }
 }

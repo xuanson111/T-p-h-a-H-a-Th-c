@@ -83,18 +83,18 @@
 .management .filter {
 }
 
-    .management .filter select {
-        padding: 7px 8px;
-        border-radius: 6px;
-        font-size: 16px;
-        margin-top: 16px;
-        min-width: 150px;
-        outline-color: var(--blue);
-    }
+.filter select {
+    padding: 7px 8px;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-top: 16px;
+    min-width: 150px;
+    outline-color: var(--blue);
+}
 
-        .management .filter select option {
-            padding: 4px
-        }
+.management .filter select option {
+    padding: 4px
+}
 
 .btn-group {
     display: flex;

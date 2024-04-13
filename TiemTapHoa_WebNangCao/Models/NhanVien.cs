@@ -20,21 +20,7 @@ namespace TiemTapHoa_WebNangCao.Models
             this.BangLuongs = new HashSet<BangLuong>();
             this.HoaDons = new HashSet<HoaDon>();
         }
-
-        public NhanVien(int maNV, string tenNV, DateTime? ngaySinh, string email, string sDT, string diaChi, string soTaiKhoan, int? chucVu, string gioiTinh, string hinhAnh)
-        {
-            MaNV = maNV;
-            TenNV = tenNV;
-            NgaySinh = ngaySinh;
-            Email = email;
-            SDT = sDT;
-            DiaChi = diaChi;
-            SoTaiKhoan = soTaiKhoan;
-            ChucVu = chucVu;
-            GioiTinh = gioiTinh;
-            HinhAnh = hinhAnh;
-        }
-
+    
         public int MaNV { get; set; }
         public string TenNV { get; set; }
         public Nullable<System.DateTime> NgaySinh { get; set; }

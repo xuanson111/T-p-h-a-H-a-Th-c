@@ -11,37 +11,22 @@ namespace TiemTapHoa_WebNangCao.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class PhieuNhap
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PhieuNhap()
         {
             this.ChiTietPhieuNhaps = new HashSet<ChiTietPhieuNhap>();
-            this.NhaCungCaps = new HashSet<NhaCungCap>();
         }
-
-        public PhieuNhap(int maPhieu, int? nhaCungCap, DateTime? ngayTao, double? thanhTien)
-        {
-            MaPhieu = maPhieu;
-            MaNCC = nhaCungCap;
-            NgayTao = ngayTao;
-            ThanhTien = thanhTien;
-        }
-
+    
         public int MaPhieu { get; set; }
         public Nullable<int> MaNCC { get; set; }
         public Nullable<System.DateTime> NgayTao { get; set; }
         public Nullable<double> ThanhTien { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChiTietPhieuNhap> ChiTietPhieuNhaps { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NhaCungCap> NhaCungCaps { get; set; }
-
         public virtual NhaCungCap NhaCungCap { get; set; }
-
     }
 }

@@ -31,22 +31,28 @@ namespace TiemTapHoa_WebNangCao.Controllers
             return View((List<ChiTietHDView>)Session["bill"]);
         }
 
-        public ActionResult Search(string searchString, bool isFilter)
+        public ActionResult Search(string searchString, string filter)
         {
-            var dsHangHoa = db.HangHoas.ToList();
-            if (!string.IsNullOrEmpty(searchString))
+            var HangHoa = db.HangHoas.ToList();
+            Boolean isSearchStr = !string.IsNullOrEmpty(searchString);
+            Boolean isFilter = !string.IsNullOrEmpty(filter);
+            if (isSearchStr && isFilter && filter != "0")
             {
-                if (isFilter)
-                {
-                    if (searchString != "0")
-                        dsHangHoa = db.HangHoas.Where(hh => hh.LoaiHangHoa.ToLower().Contains(searchString.ToLower())).ToList();
-                }
-                else
-                {
-                    dsHangHoa = db.HangHoas.Where(hh => hh.TenHH.ToLower().Contains(searchString.ToLower())).ToList();
-                }
+                var HangHoaLst = db.HangHoas.Where(nv => nv.TenHH.ToLower().Contains(searchString.ToLower()) && nv.LoaiHangHoa.ToString().ToLower().Contains(filter.ToLower()));
+                return PartialView("_HoaDon_SearchProduct", HangHoaLst);
             }
-            return PartialView("_HoaDon_SearchProduct", dsHangHoa);
+            if (isSearchStr)
+            {
+                var hangHoaLst = db.HangHoas.Where(nv => nv.TenHH.ToLower().Contains(searchString.ToLower()));
+                return PartialView("_HoaDon_SearchProduct", hangHoaLst);
+            }
+            if (isFilter)
+            {
+                if (filter == "0") return PartialView("_HoaDon_SearchProduct", HangHoa);
+                var hangHoaLst = db.HangHoas.Where(nv => nv.LoaiHangHoa.ToString().ToLower().Contains(filter.ToLower()));
+                return PartialView("_HoaDon_SearchProduct", hangHoaLst);
+            }
+            return PartialView("_HoaDon_SearchProduct", HangHoa);
         }
 
         public ActionResult handleLstAddOrder(int id, int quantity)
@@ -136,25 +142,33 @@ namespace TiemTapHoa_WebNangCao.Controllers
                 {
                     total += double.Parse((lstOrder[i].soLuong * lstOrder[i].donGia).ToString());
                 }
+
                 db.HoaDons.Add(new HoaDon(0 , null, DateTime.Now, total));
                 rowAffected = db.SaveChanges();
+
                 var lstHD = db.HoaDons.ToList();
                 int maxMaHD = lstHD[lstHD.Count - 1].MaHD;
+                var lstHH = db.HangHoas.ToList();
                 for (int i = 0; i < lstOrder.Count;i++)
                 {
                     db.ChiTietHDs.Add(new ChiTietHD(maxMaHD, lstOrder[i].maHH, lstOrder[i].soLuong));
+                    HangHoa hh = db.HangHoas.Find(lstOrder[i].maHH);
+                    hh.SoLuong = hh.SoLuong - lstOrder[i].soLuong;
                     db.SaveChanges();
                 }
+
+
             }
+
             if (rowAffected > 0) return true;
             else return false;
         }
 
         public ActionResult HoaDonView()
         {
+            Session["page"] = "HoaDonView";
             HoaDonView hd = new HoaDonView();
-            var Bills = hd.getData();
-            Session["page"] = "HoaDon";
+            var Bills = hd.getData(8);
             return View(Bills);
         }
 

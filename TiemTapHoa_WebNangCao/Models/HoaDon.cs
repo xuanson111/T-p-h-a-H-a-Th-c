@@ -19,15 +19,7 @@ namespace TiemTapHoa_WebNangCao.Models
         {
             this.ChiTietHDs = new HashSet<ChiTietHD>();
         }
-
-        public HoaDon(int maHD, int? maNV, DateTime? ngayTao, double? tongTien)
-        {
-            MaHD = maHD;
-            MaNV = maNV;
-            NgayTao = ngayTao;
-            TongTien = tongTien;
-        }
-
+    
         public int MaHD { get; set; }
         public Nullable<int> MaNV { get; set; }
         public Nullable<System.DateTime> NgayTao { get; set; }

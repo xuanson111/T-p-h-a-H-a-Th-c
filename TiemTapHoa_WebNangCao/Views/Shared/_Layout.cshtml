@@ -31,7 +31,7 @@
                         <span class="title">Tạp hóa Hòa Thạc</span>
                     </a>
                 </li>
-                <li class="@(page == "Home" ? "active" : "")" >
+                <li class="@(page == "Home" ? "active" : "")">
                     <a href="@Url.Action("Index", "Home")" id="homePage">
                         <span class="icon"><i class="fa-solid fa-bars-progress"></i></span>
                         <span class="title">Bảng điều khiển</span>
@@ -43,7 +43,13 @@
                         <span class="title">Tạo hóa đơn</span>
                     </a>
                 </li>
-                <li  class="@(page == "HangHoa" ? "active" : "")">
+                <li class="@(page == "HoaDonView" ? "active" : "")">
+                    <a href="@Url.Action("HoaDonView", "HoaDon")">
+                        <span class="icon"><i class="fa-solid fa-clipboard"></i></span>
+                        <span class="title">DS hóa đơn</span>
+                    </a>
+                </li>
+                <li class="@(page == "HangHoa" ? "active" : "")">
                     <a href="@Url.Action("Index", "HangHoa")">
                         <span class="icon"><i class="fa-solid fa-box"></i></span>
                         <span class="title">Hàng hóa</span>
