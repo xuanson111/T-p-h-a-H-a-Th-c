@@ -14,13 +14,24 @@ namespace TiemTapHoa_WebNangCao.Models
     
     public partial class BangLuong
     {
+        public BangLuong(int maBL, int? maNV, int thang, int nam, double? luong, int soNgayNghi, int tongSoNgay)
+        {
+            MaBL = maBL;
+            MaNV = maNV;
+            Thang = thang;
+            Nam = nam;
+            Luong = luong;
+            SoNgayNghi = soNgayNghi;
+            TongSoNgay = tongSoNgay;
+        }
+
         public int MaBL { get; set; }
         public Nullable<int> MaNV { get; set; }
-        public Nullable<int> Thang { get; set; }
-        public Nullable<int> Nam { get; set; }
+        public int Thang { get; set; }
+        public int Nam { get; set; }
         public Nullable<double> Luong { get; set; }
-        public Nullable<int> SoNgayNghi { get; set; }
-        public Nullable<int> TongSoNgay { get; set; }
+        public int SoNgayNghi { get; set; }
+        public int TongSoNgay { get; set; }
     
         public virtual NhanVien NhanVien { get; set; }
     }

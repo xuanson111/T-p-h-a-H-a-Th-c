@@ -14,7 +14,7 @@ namespace TiemTapHoa_WebNangCao.Models
         public Nullable<int> MaNCC { get; set; }
         public string TenNCC { get; set; }
 
-        public Nullable<int> HangHoa { get; set; }
+        public int HangHoa { get; set; }
         public string TenHH { get; set; }
 
         public Nullable<double> SoLuong { get; set; }

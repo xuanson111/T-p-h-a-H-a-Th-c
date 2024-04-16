@@ -47,7 +47,7 @@ namespace TiemTapHoa_WebNangCao.Controllers
                 var chucVu = db.ChucVus.Find(nhanVien.ChucVu);
                 double? luong = ((4500000 + chucVu.LuongCV) / bl.TongSoNgay) * (bl.TongSoNgay - bl.SoNgayNghi);
                 bl.Luong = luong.HasValue ? Math.Round(luong.Value) : 0;
-                BangLuong addBL = new BangLuong(bl.MaBL, bl.NhanVien, bl.Thang, bl.Nam, bl.SoNgayNghi, bl.TongSoNgay, bl.Luong);
+                BangLuong addBL = new BangLuong(bl.MaBL, bl.NhanVien, bl.Thang, bl.Nam, bl.Luong, bl.SoNgayNghi, bl.TongSoNgay);
 
                 db.BangLuongs.Add(addBL);
                 int rowsAffected = db.SaveChanges();

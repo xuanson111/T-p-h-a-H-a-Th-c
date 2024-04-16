@@ -19,7 +19,15 @@ namespace TiemTapHoa_WebNangCao.Models
         {
             this.ChiTietPhieuNhaps = new HashSet<ChiTietPhieuNhap>();
         }
-    
+
+        public PhieuNhap(int maPhieu, int? maNCC, DateTime? ngayTao, double? thanhTien)
+        {
+            MaPhieu = maPhieu;
+            MaNCC = maNCC;
+            NgayTao = ngayTao;
+            ThanhTien = thanhTien;
+        }
+
         public int MaPhieu { get; set; }
         public Nullable<int> MaNCC { get; set; }
         public Nullable<System.DateTime> NgayTao { get; set; }

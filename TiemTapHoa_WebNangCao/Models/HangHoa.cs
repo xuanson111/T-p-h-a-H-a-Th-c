@@ -20,7 +20,18 @@ namespace TiemTapHoa_WebNangCao.Models
             this.ChiTietHDs = new HashSet<ChiTietHD>();
             this.ChiTietPhieuNhaps = new HashSet<ChiTietPhieuNhap>();
         }
-    
+
+        public HangHoa(int maHH, string tenHH, double? donGia, double? soLuong, string loaiHangHoa, string hinhAnh, string donVi)
+        {
+            MaHH = maHH;
+            TenHH = tenHH;
+            DonGia = donGia;
+            SoLuong = soLuong;
+            LoaiHangHoa = loaiHangHoa;
+            HinhAnh = hinhAnh;
+            DonVi = donVi;
+        }
+
         public int MaHH { get; set; }
         public string TenHH { get; set; }
         public Nullable<double> DonGia { get; set; }

@@ -14,6 +14,14 @@ namespace TiemTapHoa_WebNangCao.Models
     
     public partial class ChiTietPhieuNhap
     {
+        public ChiTietPhieuNhap(int maPhieu, int maHH, double? soLuong, double? donGia)
+        {
+            MaPhieu = maPhieu;
+            MaHH = maHH;
+            SoLuong = soLuong;
+            DonGia = donGia;
+        }
+
         public int MaPhieu { get; set; }
         public int MaHH { get; set; }
         public Nullable<double> SoLuong { get; set; }
